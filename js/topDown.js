@@ -23,19 +23,19 @@ app.topDown = {
 	mouseData: { x: 0, y:0 },
 	// Enemies
 	enemies : [],
-	enemySpawnRate : 1,
+	houseSpawnRate : 1,
 	maxEnemies: 15,
-	enemyImage: undefined,
+	houseImage: undefined,
 	
 	waveAmount: 12,
-	enemyKills: 0,
+	houseKills: 0,
 	currentWave: 1,
 	// How many enemies does it take for the 
 	// spawn rate to increase
-	//enemySpawnIncrement : 50,
+	//houseSpawnIncrement : 50,
 	
 	player: undefined,
-	playerBullets : [],
+	playerTrees : [],
 	fire_rate: 3,
 	cooldown: 0,
 	
@@ -69,8 +69,8 @@ app.topDown = {
 		this.player.image = image;
 		
 		var image = new Image();
-		image.src = app.IMAGES['enemy'];
-		this.enemyImage = image;
+		image.src = app.IMAGES['house'];
+		this.houseImage = image;
 		
 		var image = new Image();
 		image.src = app.IMAGES['background'];
@@ -130,7 +130,7 @@ app.topDown = {
 			{
 				this.currentGameState = this.GAME_STATE_DEAD;
 			}
-			else if(this.enemyKills == this.waveAmount)
+			else if(this.houseKills == this.waveAmount)
 			{
 				this.currentWave++;
 				this.currentGameState = this.GAME_STATE_SHOP;
@@ -156,11 +156,11 @@ app.topDown = {
 			if(this.shop.returnToGame)
 			{
 				this.waveAmount = this.ENEMY_WAVE_INC * this.waveAmount;
-				this.enemyKills = 0;
+				this.houseKills = 0;
 				this.shop.returnToGame = false;
 				this.player.setSpeed(this.shop.movementSpeed.purchased);
 				this.fire_rate = this.BEG_FIRE_RATE + (0.05 * this.shop.fireSpeed.purchased);
-				this.enemySpawnRate+= 0.2;
+				this.houseSpawnRate+= 0.2;
 				this.player.health = 100;
 				this.currentGameState = this.GAME_STATE_GAME;
 			}
@@ -267,10 +267,10 @@ app.topDown = {
 			this.emitters[i].updateAndDraw(this.ctx);
 		}
 		
-		// Draw bullets
-		for(var i = 0; i < this.playerBullets.length; i++)
+		// Draw trees
+		for(var i = 0; i < this.playerTrees.length; i++)
 		{
-			this.playerBullets[i].draw(this.ctx);
+			this.playerTrees[i].draw(this.ctx);
 		}
 		
 		// Draw the player
@@ -295,26 +295,26 @@ app.topDown = {
 			this.enemies[i].update(this.dt);
 		}
 		
-		this.enemies = this.enemies.filter(function(enemy){
-			return enemy.active;
+		this.enemies = this.enemies.filter(function(house){
+			return house.active;
 		});
 		
-		// Bullets
-		// Shoot Bullets
+		// Trees
+		// Shoot Trees
 		this.cooldown --;
 		if(this.cooldown <= 0 && app.keydown[app.KEYBOARD.KEY_SPACE])
 		{	
 			this.shoot(this.player.position.x, this.player.position.y);
 		}
 		
-		// Move bullets
-		for(var i = 0; i < this.playerBullets.length; i++)
+		// Move trees
+		for(var i = 0; i < this.playerTrees.length; i++)
 		{
-			this.playerBullets[i].update(this.dt);
+			this.playerTrees[i].update(this.dt);
 		}
 		
-		this.playerBullets = this.playerBullets.filter(function(bullet) {
-			return bullet.active;
+		this.playerTrees = this.playerTrees.filter(function(tree) {
+			return tree.active;
 		});
 		
 		// Emitters
@@ -330,7 +330,7 @@ app.topDown = {
 		{
 			this.currentGameState = this.GAME_STATE_GAME;
 		}
-		// If in the game screen, shoot a bullet
+		// If in the game screen, shoot a tree
 		else if(this.currentGameState == this.GAME_STATE_GAME)
 		{
 			if(this.cooldown <= 0)
@@ -347,7 +347,7 @@ app.topDown = {
 			this.enemies = [];
 			this.waveAmount = 15;
 			this.currentWave = 1;
-			this.enemyKills = 0;
+			this.houseKills = 0;
 			this.currentGameState = app.topDown.GAME_STATE_MENU;
 		}
 		// Check for button clicks in the shop menu
@@ -386,55 +386,55 @@ app.topDown = {
 		this.player.keepOnScreen(this.WIDTH, this.HEIGHT);
 	},
 	
-	// Shoots a bullet in the direction that the laser points
+	// Shoots a tree in the direction that the laser points
 	shoot : function(x,y){
 		// Get the direction of the velocity
 		var velocityDir = new app.Vector(this.mouseData.x, this.mouseData.y);
 		velocityDir = velocityDir.subtract(this.player.position);
 		
-		// Create the bullet
-		this.playerBullets.push(new app.Bullet(x, y, velocityDir));
+		// Create the tree
+		this.playerTrees.push(new app.Tree(x, y, velocityDir));
 		
-		if(this.shop.bulletSpread.purchased == 1)
+		if(this.shop.treeSpread.purchased == 1)
 		{
-			var bulletAngle = velocityDir.angle();
-			var bulletMag = velocityDir.magnitude();
-			console.log(bulletAngle);
-			// Get the vectors for the new bullets
-			var bulletTwoVec = new app.Vector(bulletMag * Math.cos(bulletAngle + Math.PI / 6), bulletMag * Math.sin(bulletAngle + Math.PI / 6));
-			var bulletThreeVec = new app.Vector(bulletMag * Math.cos(bulletAngle - Math.PI / 6), bulletMag * Math.sin(bulletAngle - Math.PI / 6));
+			var treeAngle = velocityDir.angle();
+			var treeMag = velocityDir.magnitude();
+			console.log(treeAngle);
+			// Get the vectors for the new trees
+			var treeTwoVec = new app.Vector(treeMag * Math.cos(treeAngle + Math.PI / 6), treeMag * Math.sin(treeAngle + Math.PI / 6));
+			var treeThreeVec = new app.Vector(treeMag * Math.cos(treeAngle - Math.PI / 6), treeMag * Math.sin(treeAngle - Math.PI / 6));
 			
-			// Create the bullets
-			this.playerBullets.push(new app.Bullet(x, y, bulletTwoVec));
-			this.playerBullets.push(new app.Bullet(x, y, bulletThreeVec));
+			// Create the trees
+			this.playerTrees.push(new app.Tree(x, y, treeTwoVec));
+			this.playerTrees.push(new app.Tree(x, y, treeThreeVec));
 		}
 		
-		// Set cooldown for the bullet
+		// Set cooldown for the tree
 		this.cooldown = 60/this.fire_rate;
-		createjs.Sound.play("bullet", {volume: 0.3});
+		createjs.Sound.play("tree", {volume: 0.3});
 	},
 		
 	// Checks for multiple types of collisions
-	// Bullets and enemies --- If they collide, create an emitter for a death affect
+	// Trees and enemies --- If they collide, create an emitter for a death affect
 	// Enemies and player --- Decrement the player's health
 	checkForCollisions : function() {	
 		var self =  this;
-		// Bullets and Enemies
-		this.playerBullets.forEach(function(bullet) {
-			self.enemies.forEach(function(enemy) {
-				if(self.collides(bullet,enemy))
+		// Trees and Enemies
+		this.playerTrees.forEach(function(tree) {
+			self.enemies.forEach(function(house) {
+				if(self.collides(tree,house))
 				{
-					// Remove bullet
-					bullet.active = false;
+					// Remove tree
+					tree.active = false;
 					
 					// Add score
 					self.score++;
 					
-					// Get rid of enemy
-					enemy.explode();
+					// Get rid of house
+					house.explode();
 					
-					// Create an emitter on enemy death
-					var deathEmitter = new app.Emitter(enemy.position.x, enemy.position.y);
+					// Create an emitter on house death
+					var deathEmitter = new app.Emitter(house.position.x, house.position.y);
 					deathEmitter.red = 0;
 					deathEmitter.blue = 100;
 					deathEmitter.green = 0;
@@ -446,18 +446,18 @@ app.topDown = {
 					deathEmitter.useCircles = true;
 					deathEmitter.useSquareds = false;
 					
-					deathEmitter.createParticles({x:enemy.position.x, y:enemy.position.y});
-					// Since enemy died, lower wave count
-					self.enemyKills++;
+					deathEmitter.createParticles({x:house.position.x, y:house.position.y});
+					// Since house died, lower wave count
+					self.houseKills++;
 					self.emitters.push(deathEmitter);
 				}
 			});
 		});
 		// Enemies and Player
-		this.enemies.forEach(function(enemy){
-			if(self.collides(enemy, self.player))
+		this.enemies.forEach(function(house){
+			if(self.collides(house, self.player))
 			{
-				enemy.explode();
+				house.explode();
 				var hurtEmitter = new app.Emitter(self.player.position.x, self.player.position.y);
 				hurtEmitter.red = 100;
 				hurtEmitter.blue = 0;
@@ -478,9 +478,9 @@ app.topDown = {
 				hurtEmitter.createParticles({x:self.player.position.x, y:self.player.position.y});
 				
 				self.emitters.push(hurtEmitter);
-				self.player.health -= enemy.damage;
-				// Since enemy died, lower wave count
-				self.enemyKills++;
+				self.player.health -= house.damage;
+				// Since house died, lower wave count
+				self.houseKills++;
 				if(self.player.health < 0)
 				{
 					self.player.health = 0;
@@ -504,10 +504,10 @@ app.topDown = {
 	// In charge of spawning enemies
 	spawnEnemies: function(){
 		// Can more enemies be spawned this wave
-		if(this.enemyKills + this.enemies.length < this.waveAmount)
+		if(this.houseKills + this.enemies.length < this.waveAmount)
 		{
 			// Randomly spawn enemies based on a spawn rate
-			if(Math.random() < this.enemySpawnRate/60){
+			if(Math.random() < this.houseSpawnRate/60){
 				var negate = 1;
 				var random = Math.random();
 				var spawn = {x:0, y:0};
@@ -516,11 +516,11 @@ app.topDown = {
 				var randomWidth = Math.floor(Math.random() * this.WIDTH + this.WIDTH * negate);
 				if(this.DEBUG && this.enemies.length < this.maxEnemies)
 				{
-					this.enemies.push(new app.Enemy(this.enemyImage, spawn.x, spawn.y, this.player));
+					this.enemies.push(new app.House(this.houseImage, spawn.x, spawn.y, this.player));
 				}
 				else if(!this.DEBUG)
 				{
-					this.enemies.push(new app.Enemy(this.enemyImage, spawn.x, spawn.y, this.player));	
+					this.enemies.push(new app.House(this.houseImage, spawn.x, spawn.y, this.player));	
 				}				
 				
 			}

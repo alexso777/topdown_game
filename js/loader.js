@@ -22,7 +22,7 @@ app.KEYBOARD = {
 // Load in images
 app.IMAGES = {
 	player: "images/Player.png",
-	enemy: "images/Enemy.png",
+	house: "images/House.png",
 	background: "images/Background.png"
 };
 
@@ -46,15 +46,15 @@ Modernizr.load(
 			'js/topDown.js',
 			'js/utilities.js',
 			'js/player.js',
-			'js/enemy.js',
-			'js/bullet.js',
+			'js/house.js',
+			'js/tree.js',
 			'js/draw.js',
 			'js/emitter.js',
 			'js/vector.js',
-			'js/enemy.js',
+			'js/house.js',
 			'js/shop.js',
 			app.IMAGES['player'],
-			app.IMAGES['enemy'],
+			app.IMAGES['house'],
 			app.IMAGES['background']
 		],
 		
@@ -95,7 +95,7 @@ Modernizr.load(
 			//Load sounds
 			createjs.Sound.alternateExtensions = ["mp3"];
 			// gun2.mp3 - BlastWaveFx - Soundbible.com - Modified by Bryce Lockwood
-			createjs.Sound.registerSound({id:"bullet", src:"sounds/gun2.ogg"});
+			createjs.Sound.registerSound({id:"tree", src:"sounds/gun2.ogg"});
 			// backgroundMusic.mp3 - Decrease Superior Technician - www.nosoapradio.us
 			createjs.Sound.registerSound({id:"background", src:"sounds/backgroundMusic.ogg"});
 			

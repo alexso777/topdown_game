@@ -1,8 +1,8 @@
 "use strict";
 
-app.Enemy = function(){
-	// Set up everything for the enemy
-	function Enemy(image, xPos, yPos, player){
+app.House = function(){
+	// Set up everything for the house
+	function House(image, xPos, yPos, player){
 		this.active = true;
 		this.age = Math.floor(Math.random() * 128);
 		
@@ -22,9 +22,9 @@ app.Enemy = function(){
 		this.player = player;
 	};
 	
-	var p = Enemy.prototype;
+	var p = House.prototype;
 	
-	// Draw the enemy
+	// Draw the house
 	p.draw = function(ctx){
 		var halfW = this.width / 2;
 		var halfH = this.height / 2;
@@ -42,7 +42,7 @@ app.Enemy = function(){
 		}
 		
 		ctx.save();
-		// Translate and rotate the enemy
+		// Translate and rotate the house
 		ctx.translate(this.position.x, this.position.y);
 		ctx.rotate(angle);
 		
@@ -56,7 +56,7 @@ app.Enemy = function(){
 		ctx.restore();
 	};
 	
-	// Move the enemy
+	// Move the house
 	p.update = function(dt) {
 		
 		// Move towards the player
@@ -66,7 +66,7 @@ app.Enemy = function(){
 		desiredVector = desiredVector.subtract(this.velocity);
 		
 		this.acceleration = this.acceleration.add(desiredVector);
-		// Move the enemy
+		// Move the house
 		this.velocity = this.velocity.add(this.acceleration);
 		this.velocity = this.velocity.clamp(this.MAXSPEED);
 		var vel = this.velocity.scalarMult(dt);
@@ -75,7 +75,7 @@ app.Enemy = function(){
 		this.acceleration = this.acceleration.reset();
 	};
 	
-	// Sets the enemy to be removed from the array
+	// Sets the house to be removed from the array
 	p.explode = function(){
 		
 		this.active = false;
@@ -83,5 +83,5 @@ app.Enemy = function(){
 	
 	
 	
-	return Enemy;
+	return House;
 }();

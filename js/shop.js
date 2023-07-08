@@ -2,12 +2,12 @@
 var app = app || {};
 
 app.shop = {
-	bulletSpread: 
+	treeSpread: 
 	{
 		purchased: 0,
 		cost: 200,
 		max: 1,
-		text: "Bullet Spread"
+		text: "Tree Spread"
 	},
 	fireSpeed: 
 	{
@@ -39,7 +39,7 @@ app.shop = {
 		this.height = height;
 		
 		// Add all items to the shop
-		this.addItemToShop(this.bulletSpread);
+		this.addItemToShop(this.treeSpread);
 		this.addItemToShop(this.fireSpeed);
 		this.addItemToShop(this.movementSpeed);
 		this.rects.push({ x:this.width / 2 - 45, y:65 + (70 * this.items.length), width:140, height:30 });
