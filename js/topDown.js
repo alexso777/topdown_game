@@ -3,8 +3,8 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 800,
-	HEIGHT: 452,
+	WIDTH: 480,
+	HEIGHT: 320,
 	BEG_FIRE_RATE: 3,
 	
 	ENEMY_WAVE_INC: 2,
@@ -64,16 +64,13 @@ app.topDown = {
 		// Get the player
 		this.player = app.player;
 		this.player.init();
-		var image = new Image();
-		image.src = app.IMAGES['player'];
-		this.player.image = image;
 		
 		var image = new Image();
-		image.src = app.IMAGES['house'];
+		image.src = app.TERRAIN_IMAGES['house'];
 		this.houseImage = image;
 		
 		var image = new Image();
-		image.src = app.IMAGES['background'];
+		image.src = app.TERRAIN_IMAGES['background'];
 		this.backgroundImage = image;
 		this.shop = app.shop;
 		this.shop.init(this.player, this.WIDTH, this.HEIGHT);
@@ -106,25 +103,16 @@ app.topDown = {
 			
 			// Check collisions
 			this.checkForCollisions();
-			
-			if(!this.backgroundImage)
-			{
-				app.draw.backgroundGradient(this.ctx,this.WIDTH,this.HEIGHT);
-			}
-			else
-			{
-				this.drawBackground(this.ctx, this.backgroundImage);
-			}
-			
+			this.drawBackground(this.ctx);
+		
 			// Draw sprites
 			
-			this.ctx.globalAlpha = 0.9;
+			// this.ctx.globalAlpha = 0.9;
 			this.drawSprites();
-			
-			
+						
 			// Draw HUD
-			this.ctx.globalAlpha = 1.0;
-			this.drawHUD();
+			// this.ctx.globalAlpha = 1.0;
+			// this.drawHUD();
 			
 			if(this.player.health == 0)
 			{
@@ -248,36 +236,45 @@ app.topDown = {
 	},
 	
 	// Draws the background image
-	drawBackground: function(ctx, image){
-		ctx.drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
+	drawBackground: function(ctx){
+		for(let i=0; i<20; i++){
+			for(let j=0; j<30; j++){
+				ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i*30+j)], j*16, i*16, 16, 16);
+			}
+		}
 	},
 	
 	// Takes care of all the drawing
 	drawSprites : function(){
-	
-		// Draw enemies
-		for(var i = 0; i < this.enemies.length; i++)
-		{
-			this.enemies[i].draw(this.ctx);
+
+		for(let i=0; i<20; i++){
+			for(let j=0; j<30; j++){
+				if(app.objects.charAt(i*30+j) != "0" && app.objects.charCodeAt(i*30+j)%2 == 0){
+					this.ctx.drawImage(app.OBJECT_IMAGES[app.objects.charAt(i*30+j)], j*16, i*16 - app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].height, app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].width, app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].height);
+				}
+			}
 		}
+
+		// // Draw enemies
+		// for(var i = 0; i < this.enemies.length; i++)
+		// {
+		// 	this.enemies[i].draw(this.ctx);
+		// }
 		
-		// Draw emitters
-		for(var i = 0; i < this.emitters.length; i++)
-		{
-			this.emitters[i].updateAndDraw(this.ctx);
-		}
+		// // Draw emitters
+		// for(var i = 0; i < this.emitters.length; i++)
+		// {
+		// 	this.emitters[i].updateAndDraw(this.ctx);
+		// }
 		
-		// Draw trees
-		for(var i = 0; i < this.playerTrees.length; i++)
-		{
-			this.playerTrees[i].draw(this.ctx);
-		}
+		// // Draw trees
+		// for(var i = 0; i < this.playerTrees.length; i++)
+		// {
+		// 	this.playerTrees[i].draw(this.ctx);
+		// }
 		
 		// Draw the player
 		this.player.draw(this.ctx, this.mouseData);
-		
-		
-		
 	},
 	
 	// Takes care of movement and updating
@@ -288,39 +285,39 @@ app.topDown = {
 
 		// Enemies
 		// Spawn enemies
-		this.spawnEnemies();
+		// this.spawnEnemies();
 		
-		for(var i = 0; i < this.enemies.length; i++)
-		{
-			this.enemies[i].update(this.dt);
-		}
+		// for(var i = 0; i < this.enemies.length; i++)
+		// {
+		// 	this.enemies[i].update(this.dt);
+		// }
 		
-		this.enemies = this.enemies.filter(function(house){
-			return house.active;
-		});
+		// this.enemies = this.enemies.filter(function(house){
+		// 	return house.active;
+		// });
 		
-		// Trees
-		// Shoot Trees
-		this.cooldown --;
-		if(this.cooldown <= 0 && app.keydown[app.KEYBOARD.KEY_SPACE])
-		{	
-			this.shoot(this.player.position.x, this.player.position.y);
-		}
+		// // Trees
+		// // Shoot Trees
+		// this.cooldown --;
+		// if(this.cooldown <= 0 && app.keydown[app.KEYBOARD.KEY_SPACE])
+		// {	
+		// 	this.shoot(this.player.position.x, this.player.position.y);
+		// }
 		
-		// Move trees
-		for(var i = 0; i < this.playerTrees.length; i++)
-		{
-			this.playerTrees[i].update(this.dt);
-		}
+		// // Move trees
+		// for(var i = 0; i < this.playerTrees.length; i++)
+		// {
+		// 	this.playerTrees[i].update(this.dt);
+		// }
 		
-		this.playerTrees = this.playerTrees.filter(function(tree) {
-			return tree.active;
-		});
+		// this.playerTrees = this.playerTrees.filter(function(tree) {
+		// 	return tree.active;
+		// });
 		
-		// Emitters
-		this.emitters = this.emitters.filter(function(emitter) {
-			return emitter.active;
-		});
+		// // Emitters
+		// this.emitters = this.emitters.filter(function(emitter) {
+		// 	return emitter.active;
+		// });
 	},
 	
 	// Triggered when the player clicks the mouse
@@ -369,16 +366,13 @@ app.topDown = {
 		if(app.keydown[app.KEYBOARD.KEY_LEFT])
 		{
 			this.player.moveLeft(this.dt);
-		}
-		if(app.keydown[app.KEYBOARD.KEY_RIGHT])
+		} else if(app.keydown[app.KEYBOARD.KEY_RIGHT])
 		{
 			this.player.moveRight(this.dt);
-		}
-		if(app.keydown[app.KEYBOARD.KEY_UP])
+		} else if(app.keydown[app.KEYBOARD.KEY_UP])
 		{
 			this.player.moveUp(this.dt);
-		}
-		if(app.keydown[app.KEYBOARD.KEY_DOWN])
+		} else if(app.keydown[app.KEYBOARD.KEY_DOWN])
 		{
 			this.player.moveDown(this.dt);
 		}
@@ -411,7 +405,7 @@ app.topDown = {
 		
 		// Set cooldown for the tree
 		this.cooldown = 60/this.fire_rate;
-		createjs.Sound.play("tree", {volume: 0.3});
+		// createjs.Sound.play("tree", {volume: 0.3});
 	},
 		
 	// Checks for multiple types of collisions
@@ -590,8 +584,8 @@ app.topDown = {
 	
 	// Plays the background music
 	startSoundtrack: function(){
-		createjs.Sound.stop();
-		createjs.Sound.play("background",{loop: -1, volume: 0.5});
+		// createjs.Sound.stop();
+		// createjs.Sound.play("background",{loop: -1, volume: 0.5});
 	}
 	
 };
