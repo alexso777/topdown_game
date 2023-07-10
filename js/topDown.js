@@ -5,6 +5,14 @@ var app = app || {};
 app.topDown = {
 	WIDTH: 480,
 	HEIGHT: 320,
+	W_W: 30,
+	W_H: 20,
+	O_W: 0,
+	O_H: 0,
+	E_W: 0,
+	E_H: 0,
+	S_W: 0,
+	S_H: 0,
 	BEG_FIRE_RATE: 3,
 	
 	ENEMY_WAVE_INC: 2,
@@ -105,6 +113,35 @@ app.topDown = {
 			}
 			
 			this.checkForCollisions();
+
+			let posX = Math.floor(this.player.position.x/app.t_s);
+			let posY = Math.floor(this.player.position.y/app.t_s);
+			if(posX<(this.W_W/2)){
+				this.O_W = 0;
+				this.E_W = 0;
+				this.S_W = 0;
+			} else if(posX>=(app.w_w-this.W_W/2)) {
+				this.O_W = app.w_w - this.W_W;
+				this.E_W = 0;
+				this.S_W = 0;
+			} else {
+				this.O_W = posX - this.W_W/2;
+				this.E_W = Math.floor(this.player.position.x-posX*app.t_s);
+				this.S_W = 1;
+			}
+			if(posY<(this.W_H/2)){
+				this.O_H = 0;
+				this.E_H = 0;
+				this.S_H = 0;
+			} else if(posY>=(app.w_h-this.W_H/2)) {
+				this.O_H = app.w_h - this.W_H;
+				this.E_H = 0;
+				this.S_H = 0;
+			} else {
+				this.O_H = posY - this.W_H/2;
+				this.E_H = Math.floor(this.player.position.y-posY*app.t_s);
+				this.S_H = 1;
+			}
 
 			// Check collisions
 			this.drawBackground(this.ctx);
@@ -244,28 +281,27 @@ app.topDown = {
 	
 	// Draws the background image
 	drawBackground: function(ctx){
-		for(let i=0; i<20; i++){
-			for(let j=0; j<30; j++){
-				ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i*30+j)], j*16, i*16, 16, 16);
+		for(let i=this.O_H; i<(this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++){
+			for(let j=this.O_W; j<(this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++){
+				ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i*app.w_w+j)], (j-this.O_W)*app.t_s - this.E_W, (i-this.O_H)*app.t_s-this.E_H, app.t_s, app.t_s);
 			}
 		}
 	},
 	
 	// Takes care of all the drawing
 	drawSprites : function(){
-		let posX = Math.floor(this.player.position.x/16);
-		let posY = Math.floor(this.player.position.y/16);
+		let posX = Math.floor(this.player.position.x/app.t_s);
+		let posY = Math.floor(this.player.position.y/app.t_s);
 
-		for(let i=0; i<20; i++){
-			for(let j=0; j<30; j++){
-				if(app.objects.charAt(i*30+j) != "0" && app.objects.charCodeAt(i*30+j)%2 == 0){
-					let index = i*30+j;
-					let objectName = app.objects.charAt(index);
-					this.ctx.drawImage(app.OBJECT_IMAGES[objectName], j*16, i*16 + 16 - app.OBJECT_IMAGES[objectName].height, app.OBJECT_IMAGES[objectName].width, app.OBJECT_IMAGES[objectName].height);
+		for(let i=this.O_H; i<(this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++){
+			for(let j=this.O_W; j<(this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++){
+				if(app.objects[i][j] != null && app.objects[i][j].r == 1){
+					let objectName = app.objects[i][j].i;
+					this.ctx.drawImage(app.OBJECT_IMAGES[objectName], (j-this.O_W)*app.t_s-this.E_W, (i-this.O_H)*app.t_s-this.E_H + app.t_s - app.OBJECT_IMAGES[objectName].height, app.OBJECT_IMAGES[objectName].width, app.OBJECT_IMAGES[objectName].height);
 				}
 				if(j==posX && i == posY){
 					this.ctx.globalAlpha = 1.0;
-					this.player.draw(this.ctx);
+					this.player.draw(this.ctx, posX, posY, this.O_W, this.O_H, this.S_W, this.S_H);
 					this.ctx.globalAlpha = 0.8;
 				}
 			}
@@ -392,7 +428,7 @@ app.topDown = {
 			this.player.moveDown(this.dt);
 		}
 		
-		this.player.keepOnScreen(this.WIDTH, this.HEIGHT);
+		this.player.keepOnScreen();
 	},
 
 	// Takes care of player movement on key press
@@ -400,12 +436,11 @@ app.topDown = {
 	doAction: function(){
 		if(app.keydown[app.KEYBOARD.KEY_CREATE])
 		{
-			let x = Math.floor(this.player.position.x/16);
-			let y = Math.floor(this.player.position.y/16);
+			let x = Math.floor(this.player.position.x/app.t_s);
+			let y = Math.floor(this.player.position.y/app.t_s);
 			for(let i=0; i<4; i++){
 				for(let j=0; j<3; j++){
-					let index = (y-j)*30 + (x+i);
-					if(app.objects[index]!="0")
+					if(app.objects[y-j][x+i] != null)
 					{
 						return;
 					}
@@ -413,8 +448,7 @@ app.topDown = {
 			}
 			for(let i=0; i<3; i++){
 				for(let j=0; j<3; j++){
-					let index = (y-j)*30 + (x+i);
-					app.objects = app.objects.substr(0, index) + ((i==0 && j==0) ? "8" : "9") + app.objects.substr(index+1);
+					app.objects[y-j][x+i] = {i:3, r: (i==0 && j==0) ? 1 : 0};
 				}
 			}
 		}

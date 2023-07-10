@@ -37,18 +37,20 @@ app.player = {
 	},
 	
 	// Draws the player
-	draw: function(ctx){
+	draw: function(ctx, posX, posY, O_W, O_H, S_W, S_H){
 		// Draw from the middle
 		var halfW = this.width / 2;
 		var halfH = this.height / 2;
-		
+
+		let eX = S_W == 1 ? 0 : (this.position.x - posX*app.t_s);
+		let eY = S_H == 1 ? 0 : (this.position.y - posY*app.t_s);
+
 		ctx.save();
 		
 		if(this.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = 0;
 		// Translate and rotate the character
-		ctx.translate(this.position.x, this.position.y);
-		ctx.drawImage(app.PLAYER_IMAGES[this.direction][Math.floor(this.frame/4)], -halfW, -halfH, this.width, this.height)
+		ctx.drawImage(app.PLAYER_IMAGES[this.direction][Math.floor(this.frame/4)], (posX - O_W)*app.t_s + eX - halfW, (posY - O_H)*app.t_s + eY -halfH, this.width, this.height)
 		if(!this.chatStatus && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = (this.frame+1)%16;
 		
@@ -57,10 +59,10 @@ app.player = {
 	
 	// Moves the player to the left
 	moveLeft: function(dt){
-		let posX = Math.floor(this.position.x/16);
-		let posY = Math.floor(this.position.y/16);
-		let x = Math.floor((this.position.x-8)/16);
-		let y = Math.floor(this.position.y/16);
+		let posX = Math.floor(this.position.x/app.t_s);
+		let posY = Math.floor(this.position.y/app.t_s);
+		let x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
+		let y = Math.floor(this.position.y/app.t_s);
 		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 3;
 		this.acceleration.x -= this.speed;
@@ -68,10 +70,10 @@ app.player = {
 	
 	// Moves the player to the right
 	moveRight: function(dt){
-		let posX = Math.floor(this.position.x/16);
-		let posY = Math.floor(this.position.y/16);
-		let x = Math.floor((this.position.x+8)/16);
-		let y = Math.floor(this.position.y/16);
+		let posX = Math.floor(this.position.x/app.t_s);
+		let posY = Math.floor(this.position.y/app.t_s);
+		let x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
+		let y = Math.floor(this.position.y/app.t_s);
 		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 1;
 		this.acceleration.x += this.speed;
@@ -79,10 +81,10 @@ app.player = {
 	
 	// Moves the player up
 	moveUp: function(dt){
-		let posX = Math.floor(this.position.x/16);
-		let posY = Math.floor(this.position.y/16);
-		let x = Math.floor(this.position.x/16);
-		let y = Math.floor((this.position.y-8)/16);
+		let posX = Math.floor(this.position.x/app.t_s);
+		let posY = Math.floor(this.position.y/app.t_s);
+		let x = Math.floor(this.position.x/app.t_s);
+		let y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
 		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 0;
 		this.acceleration.y -= this.speed;
@@ -90,35 +92,32 @@ app.player = {
 	
 	// Moves the player to the right
 	moveDown: function(dt){
-		let posX = Math.floor(this.position.x/16);
-		let posY = Math.floor(this.position.y/16);
-		let x = Math.floor(this.position.x/16);
-		let y = Math.floor((this.position.y+8)/16);
+		let posX = Math.floor(this.position.x/app.t_s);
+		let posY = Math.floor(this.position.y/app.t_s);
+		let x = Math.floor(this.position.x/app.t_s);
+		let y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
 		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 2;
 		this.acceleration.y += this.speed;
 	},
 
 	ask: function(){
-		let posX = Math.floor(this.position.x/16);
-		let posY = Math.floor(this.position.y/16);
-
 		let x,y;
 		if(this.direction == 0){
-			x = Math.floor(this.position.x/16);
-			y = Math.floor((this.position.y-8)/16);
+			x = Math.floor(this.position.x/app.t_s);
+			y = Math.floor((this.position.y-8)/app.t_s);
 		} else if(this.direction == 1){
-			x = Math.floor((this.position.x+8)/16);
-			y = Math.floor(this.position.y/16);
+			x = Math.floor((this.position.x+8)/app.t_s);
+			y = Math.floor(this.position.y/app.t_s);
 		} else if(this.direction == 2){
-			x = Math.floor(this.position.x/16);
-			y = Math.floor((this.position.y+8)/16);
+			x = Math.floor(this.position.x/app.t_s);
+			y = Math.floor((this.position.y+8)/app.t_s);
 		} else if(this.direction == 3){
-			x = Math.floor((this.position.x-8)/16);
-			y = Math.floor(this.position.y/16);
+			x = Math.floor((this.position.x-8)/app.t_s);
+			y = Math.floor(this.position.y/app.t_s);
 		}
 
-		if (this.isOutside(x,y) || (app.objects[y*30+x] != "B")) return;
+		if (this.isOutside(x,y) || (app.objects[y][x].i != 4)) return;
 
 		this.chatStatus = true;
 	},
@@ -137,19 +136,19 @@ app.player = {
 	},
 
 	isOutside: function (x, y) {
-		if(x<0 || y<0 || x>30 || y>20)
+		if(x<0 || y<0 || x>app.w_w || y>app.w_h)
 			return true;
 		return false;
 	},
 
 	isCollision: function (x, y) {
-		if(app.objects[y*30+x] != "0")
+		if(app.objects[y][x] != null)
 			return true;
 		return false;
 	},
 	
 	// Keeps the player from leaving the screen
-	keepOnScreen: function(screenWidth, screenHeight)
+	keepOnScreen: function()
 	{
 		var halfW = this.width / 2;
 		var halfH = this.height / 2;
@@ -157,18 +156,18 @@ app.player = {
 		{
 			this.position.x = halfW;
 		}
-		else if(this.position.x + halfW > screenWidth)
+		else if(this.position.x + halfW > app.w_w*app.t_s)
 		{
-			this.position.x = screenWidth - halfW;
+			this.position.x = app.w_w*app.t_s - halfW;
 		}
 		
 		if(this.position.y - halfH < 0)
 		{
 			this.position.y = halfH;
 		}
-		else if(this.position.y + halfH > screenHeight)
+		else if(this.position.y + halfH > app.w_h*app.t_s)
 		{
-			this.position.y = screenHeight - halfH;
+			this.position.y = app.w_h*app.t_s - halfH;
 		}
 	},
 	
