@@ -99,22 +99,27 @@ app.topDown = {
 		else if(this.currentGameState == this.GAME_STATE_GAME)
 		{
 			this.player.update(this.dt);
-			this.moveSprites();
-			this.doAction();
+			if(!this.player.chatStatus) {
+				this.moveSprites();
+				this.doAction();
+			}
 			
-			// Check collisions
 			this.checkForCollisions();
+
+			// Check collisions
 			this.drawBackground(this.ctx);
 		
 			// Draw sprites
-			
 			this.ctx.globalAlpha = 0.8;
 			this.drawSprites();
-						
 			// Draw HUD
-			this.ctx.globalAlpha = 1.0;
 			// this.drawHUD();
-			
+			this.ctx.globalAlpha = 1.0;
+
+			if(this.player.chatStatus) {
+				this.player.chat(this.ctx);
+			}
+
 			if(this.player.health == 0)
 			{
 				this.currentGameState = this.GAME_STATE_DEAD;
@@ -399,9 +404,22 @@ app.topDown = {
 			for(let i=0; i<4; i++){
 				for(let j=0; j<3; j++){
 					let index = (y-j)*30 + (x+i);
+					if(app.objects[index]!="0")
+					{
+						return;
+					}
+				}
+			}
+			for(let i=0; i<4; i++){
+				for(let j=0; j<3; j++){
+					let index = (y-j)*30 + (x+i);
 					app.objects = app.objects.substr(0, index) + ((i==0 && j==0) ? "8" : "9") + app.objects.substr(index+1);
 				}
 			}
+		}
+		else if(app.keydown[app.KEYBOARD.KEY_SPACE])
+		{
+			this.player.ask();
 		}
 	},
 

@@ -13,7 +13,8 @@ app.player = {
 	speed: 150,
 	health: 100,
 	image: undefined,
-	
+	chatStatus: false,
+
 	MAXSPEED: 100,
 	FRICTION: 60,
 	
@@ -43,12 +44,12 @@ app.player = {
 		
 		ctx.save();
 		
-		if(!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN])
+		if(this.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = 0;
 		// Translate and rotate the character
 		ctx.translate(this.position.x, this.position.y);
 		ctx.drawImage(app.PLAYER_IMAGES[this.direction][Math.floor(this.frame/4)], -halfW, -halfH, this.width, this.height)
-		if(app.keydown[app.KEYBOARD.KEY_LEFT] || !app.keydown[app.KEYBOARD.KEY_UP] || !app.keydown[app.KEYBOARD.KEY_RIGHT] || !app.keydown[app.KEYBOARD.KEY_DOWN])
+		if(!this.chatStatus && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = (this.frame+1)%16;
 		
 		ctx.restore();
@@ -96,6 +97,43 @@ app.player = {
 		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 2;
 		this.acceleration.y += this.speed;
+	},
+
+	ask: function(){
+		let posX = Math.floor(this.position.x/16);
+		let posY = Math.floor(this.position.y/16);
+
+		let x,y;
+		if(this.direction == 0){
+			x = Math.floor(this.position.x/16);
+			y = Math.floor((this.position.y-8)/16);
+		} else if(this.direction == 1){
+			x = Math.floor((this.position.x+8)/16);
+			y = Math.floor(this.position.y/16);
+		} else if(this.direction == 2){
+			x = Math.floor(this.position.x/16);
+			y = Math.floor((this.position.y+8)/16);
+		} else if(this.direction == 3){
+			x = Math.floor((this.position.x-8)/16);
+			y = Math.floor(this.position.y/16);
+		}
+
+		if (this.isOutside(x,y) || (app.objects[y*30+x] != "B")) return;
+
+		this.chatStatus = true;
+	},
+
+	chat: function(ctx) {
+		if(app.keydown[app.KEYBOARD.KEY_ENTER])
+		{
+			this.chatStatus = false;
+		} else {
+			ctx.save();
+			app.draw.rect(ctx, 40, 120, 400, 80, "brown");
+			app.draw.text(ctx, "Hello! Nice to meet you here. What do you want from me?", 60, 140, 12, "white");
+			app.draw.text(ctx, "Press Enter to exit!", 60, 160, 12, "white");
+			ctx.restore();
+		}
 	},
 
 	isOutside: function (x, y) {
