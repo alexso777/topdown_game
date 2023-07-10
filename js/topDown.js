@@ -197,15 +197,16 @@ app.topDown = {
 		}
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		app.draw.text(this.ctx, "TopDown", this.WIDTH/2, this.HEIGHT/2 - 150, 60, "white");
-		app.draw.text(this.ctx, "Click to play", this.WIDTH/2, this.HEIGHT/2 - 75, 30, "white");
-		app.draw.text(this.ctx, "Made by Timothy Reuter", this.WIDTH/2, this.HEIGHT/2 - 25, 30, "white");
-		app.draw.text(this.ctx, "Controls", this.WIDTH/2, this.HEIGHT/2 + 50, 30, "white");
-		app.draw.text(this.ctx, "A - Move Left", this.WIDTH/2 - 125, this.HEIGHT/2 + 100, 20, "white");
-		app.draw.text(this.ctx, "D - Move Right", this.WIDTH/2 + 125, this.HEIGHT/2 + 100, 20, "white");
-		app.draw.text(this.ctx, "W - Move Up", this.WIDTH/2 - 125, this.HEIGHT/2 + 125, 20, "white");
-		app.draw.text(this.ctx, "S - Move Down", this.WIDTH/2 + 125, this.HEIGHT/2 + 125, 20, "white");
-		app.draw.text(this.ctx, "left click - Shoot", this.WIDTH/2, this.HEIGHT/2 + 150, 20, "white");
+		app.draw.text(this.ctx, "TopDown", this.WIDTH/2, this.HEIGHT/2 - 100, 40, "white");
+		app.draw.text(this.ctx, "Click to play", this.WIDTH/2, this.HEIGHT/2 - 50, 20, "white");
+		app.draw.text(this.ctx, "Made by TechGuy", this.WIDTH/2, this.HEIGHT/2 - 16, 20, "white");
+		app.draw.text(this.ctx, "Controls", this.WIDTH/2, this.HEIGHT/2 + 32, 30, "white");
+		app.draw.text(this.ctx, "A - Move Left", this.WIDTH/2 - 80, this.HEIGHT/2 + 60, 12, "white");
+		app.draw.text(this.ctx, "D - Move Right", this.WIDTH/2 + 80, this.HEIGHT/2 + 60, 12, "white");
+		app.draw.text(this.ctx, "W - Move Up", this.WIDTH/2 - 80, this.HEIGHT/2 + 80, 12, "white");
+		app.draw.text(this.ctx, "S - Move Down", this.WIDTH/2 + 80, this.HEIGHT/2 + 80, 12, "white");
+		app.draw.text(this.ctx, "Space - chat with people", this.WIDTH/2 - 80, this.HEIGHT/2 + 100, 12, "white");
+		app.draw.text(this.ctx, "C - build house", this.WIDTH/2 + 80, this.HEIGHT/2 + 100, 12, "white");
 		ctx.restore();
 	},
 	
