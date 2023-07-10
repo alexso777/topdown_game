@@ -47,35 +47,67 @@ app.player = {
 			this.frame = 0;
 		// Translate and rotate the character
 		ctx.translate(this.position.x, this.position.y);
-		ctx.drawImage(app.PLAYER_IMAGES[this.direction][this.frame], -halfW, -halfH, this.width, this.height)
+		ctx.drawImage(app.PLAYER_IMAGES[this.direction][Math.floor(this.frame/4)], -halfW, -halfH, this.width, this.height)
 		if(app.keydown[app.KEYBOARD.KEY_LEFT] || !app.keydown[app.KEYBOARD.KEY_UP] || !app.keydown[app.KEYBOARD.KEY_RIGHT] || !app.keydown[app.KEYBOARD.KEY_DOWN])
-			this.frame = (this.frame+1)%4;
+			this.frame = (this.frame+1)%16;
 		
 		ctx.restore();
 	},
 	
 	// Moves the player to the left
 	moveLeft: function(dt){
+		let posX = Math.floor(this.position.x/16);
+		let posY = Math.floor(this.position.y/16);
+		let x = Math.floor((this.position.x-8)/16);
+		let y = Math.floor(this.position.y/16);
+		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 3;
 		this.acceleration.x -= this.speed;
 	},
 	
 	// Moves the player to the right
 	moveRight: function(dt){
+		let posX = Math.floor(this.position.x/16);
+		let posY = Math.floor(this.position.y/16);
+		let x = Math.floor((this.position.x+8)/16);
+		let y = Math.floor(this.position.y/16);
+		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 1;
 		this.acceleration.x += this.speed;
 	},
 	
 	// Moves the player up
 	moveUp: function(dt){
+		let posX = Math.floor(this.position.x/16);
+		let posY = Math.floor(this.position.y/16);
+		let x = Math.floor(this.position.x/16);
+		let y = Math.floor((this.position.y-8)/16);
+		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 0;
 		this.acceleration.y -= this.speed;
 	},
 	
 	// Moves the player to the right
 	moveDown: function(dt){
+		let posX = Math.floor(this.position.x/16);
+		let posY = Math.floor(this.position.y/16);
+		let x = Math.floor(this.position.x/16);
+		let y = Math.floor((this.position.y+8)/16);
+		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 2;
 		this.acceleration.y += this.speed;
+	},
+
+	isOutside: function (x, y) {
+		if(x<0 || y<0 || x>30 || y>20)
+			return true;
+		return false;
+	},
+
+	isCollision: function (x, y) {
+		if(app.objects[y*30+x] != "0")
+			return true;
+		return false;
 	},
 	
 	// Keeps the player from leaving the screen

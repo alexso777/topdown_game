@@ -100,6 +100,7 @@ app.topDown = {
 		{
 			this.player.update(this.dt);
 			this.moveSprites();
+			this.doAction();
 			
 			// Check collisions
 			this.checkForCollisions();
@@ -107,11 +108,11 @@ app.topDown = {
 		
 			// Draw sprites
 			
-			// this.ctx.globalAlpha = 0.9;
+			this.ctx.globalAlpha = 0.8;
 			this.drawSprites();
 						
 			// Draw HUD
-			// this.ctx.globalAlpha = 1.0;
+			this.ctx.globalAlpha = 1.0;
 			// this.drawHUD();
 			
 			if(this.player.health == 0)
@@ -246,11 +247,20 @@ app.topDown = {
 	
 	// Takes care of all the drawing
 	drawSprites : function(){
+		let posX = Math.floor(this.player.position.x/16);
+		let posY = Math.floor(this.player.position.y/16);
 
 		for(let i=0; i<20; i++){
 			for(let j=0; j<30; j++){
 				if(app.objects.charAt(i*30+j) != "0" && app.objects.charCodeAt(i*30+j)%2 == 0){
-					this.ctx.drawImage(app.OBJECT_IMAGES[app.objects.charAt(i*30+j)], j*16, i*16 - app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].height, app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].width, app.OBJECT_IMAGES[app.objects.charAt(i*30+j)].height);
+					let index = i*30+j;
+					let objectName = app.objects.charAt(index);
+					this.ctx.drawImage(app.OBJECT_IMAGES[objectName], j*16, i*16 + 16 - app.OBJECT_IMAGES[objectName].height, app.OBJECT_IMAGES[objectName].width, app.OBJECT_IMAGES[objectName].height);
+				}
+				if(j==posX && i == posY){
+					this.ctx.globalAlpha = 1.0;
+					this.player.draw(this.ctx);
+					this.ctx.globalAlpha = 0.8;
 				}
 			}
 		}
@@ -274,7 +284,6 @@ app.topDown = {
 		// }
 		
 		// Draw the player
-		this.player.draw(this.ctx, this.mouseData);
 	},
 	
 	// Takes care of movement and updating
@@ -379,7 +388,23 @@ app.topDown = {
 		
 		this.player.keepOnScreen(this.WIDTH, this.HEIGHT);
 	},
-	
+
+	// Takes care of player movement on key press
+	// Also keeps the player on screen
+	doAction: function(){
+		if(app.keydown[app.KEYBOARD.KEY_CREATE])
+		{
+			let x = Math.floor(this.player.position.x/16);
+			let y = Math.floor(this.player.position.y/16);
+			for(let i=0; i<4; i++){
+				for(let j=0; j<3; j++){
+					let index = (y-j)*30 + (x+i);
+					app.objects = app.objects.substr(0, index) + ((i==0 && j==0) ? "8" : "9") + app.objects.substr(index+1);
+				}
+			}
+		}
+	},
+
 	// Shoots a tree in the direction that the laser points
 	shoot : function(x,y){
 		// Get the direction of the velocity
