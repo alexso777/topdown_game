@@ -411,7 +411,7 @@ app.topDown = {
 					}
 				}
 			}
-			for(let i=0; i<4; i++){
+			for(let i=0; i<3; i++){
 				for(let j=0; j<3; j++){
 					let index = (y-j)*30 + (x+i);
 					app.objects = app.objects.substr(0, index) + ((i==0 && j==0) ? "8" : "9") + app.objects.substr(index+1);
