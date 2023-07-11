@@ -3,10 +3,10 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 480,
-	HEIGHT: 320,
-	W_W: 30,
-	W_H: 20,
+	WIDTH: 160,
+	HEIGHT: 80,
+	W_W: 20,
+	W_H: 10,
 	O_W: 0,
 	O_H: 0,
 	E_W: 0,

@@ -10,12 +10,12 @@ app.player = {
 	height: 20,
 	direction: 0,
 	frame: 0,
-	speed: 150,
+	speed: 80,
 	health: 100,
 	image: undefined,
 	chatStatus: false,
 
-	MAXSPEED: 150,
+	MAXSPEED: 80,
 	FRICTION: 60,
 	
 	// Sets up the player
@@ -117,7 +117,7 @@ app.player = {
 			y = Math.floor(this.position.y/app.t_s);
 		}
 
-		if (this.isOutside(x,y) || (app.objects[y][x].i != 4)) return;
+		if (this.isOutside(x,y) || app.objects[y][x] == null || app.objects[y][x].i != 4) return;
 
 		this.chatStatus = true;
 	},
