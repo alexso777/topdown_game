@@ -26,7 +26,7 @@ app.draw = {
 	
 	// Writes text
 	text : function(ctx, string, x, y, size, col) {
-		ctx.font = 'bold '+size+'px Monospace';
+		ctx.font = ''+size+'px Monospace';
 		ctx.fillStyle = col;
 		ctx.fillText(string, x, y);
 	},

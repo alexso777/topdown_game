@@ -3,10 +3,10 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 128,
-	HEIGHT: 80,
-	W_W: 16,
-	W_H: 10,
+	WIDTH: 320,
+	HEIGHT: 192,
+	W_W: 40,
+	W_H: 24,
 	O_W: 0,
 	O_H: 0,
 	E_W: 0,
@@ -147,7 +147,7 @@ app.topDown = {
 			this.drawBackground(this.ctx);
 		
 			// Draw sprites
-			this.ctx.globalAlpha = 0.8;
+			this.ctx.globalAlpha = 0.9;
 			this.drawSprites();
 			// Draw HUD
 			// this.drawHUD();
@@ -286,6 +286,13 @@ app.topDown = {
 				ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i*app.w_w+j)], (j-this.O_W)*app.t_s - this.E_W, (i-this.O_H)*app.t_s-this.E_H, app.t_s, app.t_s);
 			}
 		}
+		for(let i=this.O_H; i<(this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++){
+			for(let j=this.O_W; j<(this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++){
+				if(app.covers.charAt(i*app.w_w+j)!="0"){
+					ctx.drawImage(app.COVER_IMAGES[app.covers.charAt(i*app.w_w+j)], (j-this.O_W)*app.t_s - this.E_W, (i-this.O_H)*app.t_s-this.E_H, app.t_s, app.t_s);
+				}
+			}
+		}
 	},
 	
 	// Takes care of all the drawing
@@ -302,7 +309,7 @@ app.topDown = {
 				if(j==posX && i == posY){
 					this.ctx.globalAlpha = 1.0;
 					this.player.draw(this.ctx, posX, posY, this.O_W, this.O_H, this.S_W, this.S_H);
-					this.ctx.globalAlpha = 0.8;
+					this.ctx.globalAlpha = 0.9;
 				}
 			}
 		}
@@ -438,16 +445,16 @@ app.topDown = {
 		{
 			let x = Math.floor(this.player.position.x/app.t_s);
 			let y = Math.floor(this.player.position.y/app.t_s);
-			for(let i=0; i<4; i++){
-				for(let j=0; j<3; j++){
+			for(let i=0; i<2; i++){
+				for(let j=0; j<1; j++){
 					if(app.objects[y-j][x+i] != null)
 					{
 						return;
 					}
 				}
 			}
-			for(let i=0; i<3; i++){
-				for(let j=0; j<3; j++){
+			for(let i=0; i<2; i++){
+				for(let j=0; j<1; j++){
 					app.objects[y-j][x+i] = {i:3, r: (i==0 && j==0) ? 1 : 0};
 				}
 			}

@@ -6,8 +6,8 @@ app.player = {
 	position: undefined,
 	velocity: undefined,
 	acceleration: undefined,
-	width: 16,
-	height: 20,
+	width: 8,
+	height: 8,
 	direction: 0,
 	frame: 0,
 	speed: 80,
@@ -44,6 +44,9 @@ app.player = {
 
 		let eX = S_W == 1 ? 0 : (this.position.x - posX*app.t_s);
 		let eY = S_H == 1 ? 0 : (this.position.y - posY*app.t_s);
+
+		eX = Math.floor(eX);
+		eY = Math.floor(eY);
 
 		ctx.save();
 		
@@ -105,15 +108,15 @@ app.player = {
 		let x,y;
 		if(this.direction == 0){
 			x = Math.floor(this.position.x/app.t_s);
-			y = Math.floor((this.position.y-8)/app.t_s);
+			y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
 		} else if(this.direction == 1){
-			x = Math.floor((this.position.x+8)/app.t_s);
+			x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
 			y = Math.floor(this.position.y/app.t_s);
 		} else if(this.direction == 2){
 			x = Math.floor(this.position.x/app.t_s);
-			y = Math.floor((this.position.y+8)/app.t_s);
+			y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
 		} else if(this.direction == 3){
-			x = Math.floor((this.position.x-8)/app.t_s);
+			x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
 			y = Math.floor(this.position.y/app.t_s);
 		}
 
@@ -128,9 +131,11 @@ app.player = {
 			this.chatStatus = false;
 		} else {
 			ctx.save();
-			app.draw.rect(ctx, 40, 120, 400, 80, "brown");
-			app.draw.text(ctx, "Hello! Nice to meet you here. What do you want from me?", 60, 140, 12, "white");
-			app.draw.text(ctx, "Press Enter to exit!", 60, 160, 12, "white");
+			app.draw.rect(ctx, 10, 40, 100, 30, "brown");
+			app.draw.text(ctx, "Hello! Nice to meet you", 15, 45, 8, "white");
+			app.draw.text(ctx, "here. What do you want", 15, 55, 8, "white");
+			app.draw.text(ctx, "from me?", 15, 65, 8, "white");
+			app.draw.text(ctx, "Press Enter to exit!", 15, 75, 8, "white");
 			ctx.restore();
 		}
 	},
