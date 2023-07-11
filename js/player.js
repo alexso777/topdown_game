@@ -15,7 +15,7 @@ app.player = {
 	image: undefined,
 	chatStatus: false,
 
-	MAXSPEED: 100,
+	MAXSPEED: 150,
 	FRICTION: 60,
 	
 	// Sets up the player
@@ -136,7 +136,7 @@ app.player = {
 	},
 
 	isOutside: function (x, y) {
-		if(x<0 || y<0 || x>app.w_w || y>app.w_h)
+		if(x<0 || y<0 || x>=app.w_w || y>=app.w_h)
 			return true;
 		return false;
 	},
