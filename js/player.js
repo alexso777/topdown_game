@@ -120,9 +120,22 @@ app.player = {
 			y = Math.floor(this.position.y/app.t_s);
 		}
 
-		if (this.isOutside(x,y) || app.objects[y][x] == null || app.objects[y][x].i != 4) return;
+		if (this.isOutside(x,y) || app.objects[y][x] == null) return;
+		if(app.objects[y][x].i == 4){
+			this.doAsk();
+		} else if(app.objects[y][x].i == 3){
+			this.doTetris();
+		}
 
+
+	},
+
+	doAsk: function() {
 		this.chatStatus = true;
+	},
+
+	doTetris: function() {
+		window.open("https://tetris.com/play-tetris", "_blank");
 	},
 
 	chat: function(ctx) {
