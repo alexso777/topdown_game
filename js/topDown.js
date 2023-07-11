@@ -3,9 +3,9 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 160,
+	WIDTH: 128,
 	HEIGHT: 80,
-	W_W: 20,
+	W_W: 16,
 	W_H: 10,
 	O_W: 0,
 	O_H: 0,
