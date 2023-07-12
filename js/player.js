@@ -153,10 +153,7 @@ app.player = {
 		} else {
 			ctx.save();
 			app.draw.rect(ctx, 10, 40, 100, 30, "brown");
-			app.draw.text(ctx, "Hello! Nice to meet you", 15, 45, 8, "white");
-			app.draw.text(ctx, "here. What do you want", 15, 55, 8, "white");
-			app.draw.text(ctx, "from me?", 15, 65, 8, "white");
-			app.draw.text(ctx, "Press Enter to exit!", 15, 75, 8, "white");
+			app.draw.text(ctx, "Hello! Nice to meet you here. Press Enter to exit!", 15, 75, 8, "white", 100);
 			ctx.restore();
 		}
 	},

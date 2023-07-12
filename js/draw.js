@@ -25,10 +25,27 @@ app.draw = {
 	},
 	
 	// Writes text
-	text : function(ctx, string, x, y, size, col) {
-		ctx.font = ''+size+'px Monospace';
-		ctx.fillStyle = col;
-		ctx.fillText(string, x, y);
+	text : function(ctx, text, x, y, fontSize, color, maxWidth=1000) {
+		ctx.font = ''+fontSize+'px "Press Start 2P"';
+		ctx.fillStyle = color;
+		const words = text.split(' ');
+		let line = '';
+	  
+		for (let i = 0; i < words.length; i++) {
+		  const testLine = line + words[i] + ' ';
+		  const metrics = ctx.measureText(testLine);
+		  const lineWidth = metrics.width;
+	  
+		  if (lineWidth > maxWidth && i > 0) {
+			ctx.fillText(line, x, y);
+			line = words[i] + ' ';
+			y += 20; // adjust the line height as needed
+		  } else {
+			line = testLine;
+		  }
+		}
+	  
+		ctx.fillText(line, x, y);
 	},
 	
 	// Puts a gradient on the background
