@@ -3,11 +3,11 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 320,
-	HEIGHT: 192,
+	WIDTH: 160,
+	HEIGHT: 96,
 	BAR_HEIGHT: 20,
-	W_W: 40,
-	W_H: 24,
+	W_W: 20,
+	W_H: 12,
 	O_W: 0,
 	O_H: 0,
 	E_W: 0,

@@ -76,6 +76,7 @@ app.House = function(){
 	};
 
 	p.doAction = function() {
+		app.player.workFrame = 1;
 		if(this.style == 1){
 			window.open("https://tetris.com/play-tetris", "_blank");
 		} else if (this.style == 2){

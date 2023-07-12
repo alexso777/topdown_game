@@ -51,6 +51,7 @@ app.Tree = function(){
 	};
 
 	p.doAction = function() {
+		app.player.workFrame = 1;
 		app.wood += 10;
 		if(!this.isRoot){
 			this.isRoot = true;

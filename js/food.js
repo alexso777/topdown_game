@@ -38,6 +38,7 @@ app.Food = function(){
 	};
 
 	p.doAction = function() {
+		app.player.workFrame = 1;
 		app.food += 10;
 		app.objects[this.posY][this.posX] = null;
 		delete this;

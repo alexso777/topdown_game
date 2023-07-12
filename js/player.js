@@ -14,6 +14,7 @@ app.player = {
 	health: 100,
 	image: undefined,
 	chatStatus: false,
+	workFrame: 0,
 
 	MAXSPEED: 80,
 	FRICTION: 60,
@@ -107,41 +108,45 @@ app.player = {
 	// Takes care of player movement on key press
 	// Also keeps the player on screen
 	doAction: function(){
-		if(app.keydown[app.KEYBOARD.KEY_CREATE])
-		{
-			let x = Math.floor(this.position.x/app.t_s);
-			let y = Math.floor(this.position.y/app.t_s);
-			if(app.HouseData.checkSpace(x, y, this.direction)){
-				console.log(app.wood, app.stone, app.social);
-				if(app.wood >= 20 && app.stone >= 30){
-					new app.House(x, y, 0, this.direction);
-					app.wood -= 20;
-					app.stone -= 30;
-				} else if (app.social >= 2){
-					new app.House(x, y, 0, this.direction);
-					app.social -= 2;
+		if(this.workFrame == 0){
+			if(app.keydown[app.KEYBOARD.KEY_CREATE])
+			{
+				let x = Math.floor(this.position.x/app.t_s);
+				let y = Math.floor(this.position.y/app.t_s);
+				if(app.HouseData.checkSpace(x, y, this.direction)){
+					console.log(app.wood, app.stone, app.social);
+					if(app.wood >= 20 && app.stone >= 30){
+						new app.House(x, y, 0, this.direction);
+						app.wood -= 20;
+						app.stone -= 30;
+					} else if (app.social >= 2){
+						new app.House(x, y, 0, this.direction);
+						app.social -= 2;
+					}
 				}
 			}
-		}
-		else if(app.keydown[app.KEYBOARD.KEY_SPACE])
-		{
-			let x,y;
-			if(this.direction == 0){
-				x = Math.floor(this.position.x/app.t_s);
-				y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
-			} else if(this.direction == 1){
-				x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
-				y = Math.floor(this.position.y/app.t_s);
-			} else if(this.direction == 2){
-				x = Math.floor(this.position.x/app.t_s);
-				y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
-			} else if(this.direction == 3){
-				x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
-				y = Math.floor(this.position.y/app.t_s);
+			else if(app.keydown[app.KEYBOARD.KEY_SPACE])
+			{
+				let x,y;
+				if(this.direction == 0){
+					x = Math.floor(this.position.x/app.t_s);
+					y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
+				} else if(this.direction == 1){
+					x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
+					y = Math.floor(this.position.y/app.t_s);
+				} else if(this.direction == 2){
+					x = Math.floor(this.position.x/app.t_s);
+					y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
+				} else if(this.direction == 3){
+					x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
+					y = Math.floor(this.position.y/app.t_s);
+				}
+		
+				if (app.isOutside(x,y) || app.objects[y][x] == null) return;
+				app.objects[y][x].o.doAction();
 			}
-	
-			if (app.isOutside(x,y) || app.objects[y][x] == null) return;
-			app.objects[y][x].o.doAction();
+		} else {
+			this.workFrame = (this.workFrame + 1) % 20;
 		}
 	},
 
