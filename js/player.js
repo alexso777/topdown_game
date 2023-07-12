@@ -66,8 +66,8 @@ app.player = {
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
 		let y = Math.floor(this.position.y/app.t_s);
-		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 3;
+		if (app.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.acceleration.x -= this.speed;
 	},
 	
@@ -77,8 +77,8 @@ app.player = {
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
 		let y = Math.floor(this.position.y/app.t_s);
-		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 1;
+		if (app.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.acceleration.x += this.speed;
 	},
 	
@@ -88,8 +88,8 @@ app.player = {
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor(this.position.x/app.t_s);
 		let y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
-		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 0;
+		if (app.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.acceleration.y -= this.speed;
 	},
 	
@@ -99,48 +99,56 @@ app.player = {
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor(this.position.x/app.t_s);
 		let y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
-		if (this.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.direction = 2;
+		if (app.isOutside(x,y) || (!this.isCollision(posX, posY) && (this.isCollision(x,y)))) return;
 		this.acceleration.y += this.speed;
 	},
 
-	ask: function(){
-		let x,y;
-		if(this.direction == 0){
-			x = Math.floor(this.position.x/app.t_s);
-			y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
-		} else if(this.direction == 1){
-			x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
-			y = Math.floor(this.position.y/app.t_s);
-		} else if(this.direction == 2){
-			x = Math.floor(this.position.x/app.t_s);
-			y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
-		} else if(this.direction == 3){
-			x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
-			y = Math.floor(this.position.y/app.t_s);
+	// Takes care of player movement on key press
+	// Also keeps the player on screen
+	doAction: function(){
+		if(app.keydown[app.KEYBOARD.KEY_CREATE])
+		{
+			let x = Math.floor(this.position.x/app.t_s);
+			let y = Math.floor(this.position.y/app.t_s);
+			if(app.HouseData.checkSpace(x, y, this.direction)){
+				console.log(app.wood, app.stone, app.social);
+				if(app.wood >= 20 && app.stone >= 30){
+					new app.House(x, y, 0, this.direction);
+					app.wood -= 20;
+					app.stone -= 30;
+				} else if (app.social >= 2){
+					new app.House(x, y, 0, this.direction);
+					app.social -= 2;
+				}
+			}
 		}
-
-		if (this.isOutside(x,y) || app.objects[y][x] == null) return;
-		if(app.objects[y][x].i == 4){
-			this.doAsk();
-		} else if(app.objects[y][x].i == 3){
-			this.doTetris();
+		else if(app.keydown[app.KEYBOARD.KEY_SPACE])
+		{
+			let x,y;
+			if(this.direction == 0){
+				x = Math.floor(this.position.x/app.t_s);
+				y = Math.floor((this.position.y-app.t_s/2)/app.t_s);
+			} else if(this.direction == 1){
+				x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
+				y = Math.floor(this.position.y/app.t_s);
+			} else if(this.direction == 2){
+				x = Math.floor(this.position.x/app.t_s);
+				y = Math.floor((this.position.y+app.t_s/2)/app.t_s);
+			} else if(this.direction == 3){
+				x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
+				y = Math.floor(this.position.y/app.t_s);
+			}
+	
+			if (app.isOutside(x,y) || app.objects[y][x] == null) return;
+			app.objects[y][x].o.doAction();
 		}
-
-
-	},
-
-	doAsk: function() {
-		this.chatStatus = true;
-	},
-
-	doTetris: function() {
-		window.open("https://tetris.com/play-tetris", "_blank");
 	},
 
 	chat: function(ctx) {
 		if(app.keydown[app.KEYBOARD.KEY_ENTER])
 		{
+			app.social+=1;
 			this.chatStatus = false;
 		} else {
 			ctx.save();
@@ -151,12 +159,6 @@ app.player = {
 			app.draw.text(ctx, "Press Enter to exit!", 15, 75, 8, "white");
 			ctx.restore();
 		}
-	},
-
-	isOutside: function (x, y) {
-		if(x<0 || y<0 || x>=app.w_w || y>=app.w_h)
-			return true;
-		return false;
 	},
 
 	isCollision: function (x, y) {

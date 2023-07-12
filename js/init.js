@@ -25,6 +25,11 @@ app.t_s = 8;
 app.w_w = 120;
 app.w_h = 40;
 
+app.food = 30;
+app.wood = 0;
+app.stone = 0;
+app.social = 0;
+
 app.TERRAIN_IMAGES = {}
 
 let tileImage_0 = new Image();
@@ -187,76 +192,6 @@ app.covers = "\
 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\
 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 
-app.OBJECT_IMAGES = [];
-
-let treeImage = new Image();
-treeImage.src = "data:image/gif;base64,R0lGODlhEAAQALMAAAAAAP///0IpMRkQIRk6QilaQkKMSmPFSv///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAIACwAAAAAEAAQAAAETBDJicagmA5zbtbcYXhfFXZlVRjh+A3rKZISbMSnOw3EWsQi3a7nYxVoFYJluVTufAUC8cfxwKi/IsvK67G+N8uumWW+BgKBOFVbUyIAOw==";
-app.OBJECT_IMAGES.push(treeImage);
-
-let treerootImage = new Image();
-treerootImage.src = "data:image/gif;base64,R0lGODlhCAAIAKIAAAAAAP///0IpMRkQIealc7VrUnNCOv///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAHACwAAAAACAAIAAADFXi6fDPtEbgGKVSNYrITHTOA3hgeCQA7";
-app.OBJECT_IMAGES.push(treerootImage);
-
-let stoneImage = new Image();
-stoneImage.src = "data:image/gif;base64,R0lGODlhEAAQAKIAAAAAAP///xkQIVprjIyctb3O3v///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAAEAAQAAADOWi63P5wiTnjJCUT8QTO4OYIYCkyXhmeCqkWRMxJnxbL6K3Hw0x5u4GQM9EAhUif7vdDUSLQqNSQAAA7";
-app.OBJECT_IMAGES.push(stoneImage);
-
-let houseImage = new Image();
-houseImage.src = "data:image/gif;base64,R0lGODlhEAAQAKIAAAAAAP///0IpMRkQIbVrUnNCOv///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAAEAAQAAADUGi6NsNwuVJcVE4UTYiVA0VpVGcNAkkWXemhY+ya4ZqyhJttqTDhlEzv96OlirlKqNIIDTpQj+/R0DwdHimzWnllYVSw12TFWB3oHbV5YRsSADs=";
-app.OBJECT_IMAGES.push(houseImage);
-
-let characterImage = new Image();
-characterImage.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///zExUkpKc5yttcXezuaUSs5rOpxCOmspKZRra////wAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAALACwAAAAACAAIAAAEH3AtQIGcJhsLjv9cgiCJNY0jVxDDQBQUIrQCwikUvkQAOw==";
-app.OBJECT_IMAGES.push(characterImage);
-
-let treeImage_1 = new Image();
-treeImage_1.src = "data:image/gif;base64,R0lGODlhEAAQAKIAAAAAAP///xkQIRk6QilaQkKMSmPFSv///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAHACwAAAAAEAAQAAADVngqLPrwsGJMYfGJyk3DS0FxU3U5AiVaW+dJhBh/nMgQOFNPszSkLlaB4JCIRiYbMRQ7HolFAU5GxS1hg9h0OMhGu9ZsltAt+rpjcjkiQLt/GcmnAUkAADs=";
-app.OBJECT_IMAGES.push(treeImage_1);
-
-let treerootImage_1 = new Image();
-treerootImage_1.src = "data:image/gif;base64,R0lGODlhCAAIAKIAAAAAAP///0IpMRkQIbVrUnNCOv///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAACAAIAAADFmhqM6uDELdGmbAJ4eJs0EVB25g9RgIAOw==";
-app.OBJECT_IMAGES.push(treerootImage_1);
-
-let stoneImage_1 = new Image();
-stoneImage_1.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///xkQIbW9zlprjIycta29zr3O3v///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAIACwAAAAACAAIAAAEGRDJOYWlSJxzcxlbIWQEYYSjUBbsmFkdJkUAOw==";
-app.OBJECT_IMAGES.push(stoneImage_1);
-
-let stoneImage_2 = new Image();
-stoneImage_2.src = "data:image/gif;base64,R0lGODlhEAAQAKIAAAAAAP///xkQIVprjIyctb3O3v///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAAEAAQAAADRGhq0vtQlClgnLhaRvAkWtR5RfgIxJhtaOqBYuqWjaMIg5yiGMzkMh6pggOCZK/GYJnD6YJFZlQ3IDKXUWyoxuVuvo8EADs=";
-app.OBJECT_IMAGES.push(stoneImage_2);
-
-let houseImage_1 = new Image();
-houseImage_1.src = "data:image/gif;base64,R0lGODlhEAAgALMAAAAAAP///0IpMRkQIealc7VrUnNCOtbOzvfv7+be3v///wAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAKACwAAAAAEAAgAAAEtVDJOeqYGI9iTLkZJXTcFyrD2HkeKAqCVRWmlBrjQNAbd92qjUFI+wxwnVghxvLdOrPhsWTBDQ7HK5Y1s2BlYGFuOqURKjvacIw0hi0JS22QSBziwzrCYrvjPwkIexoHdykfCIEuKH5kcXGEWGZ0A4MUhjJ6i1p1nYGWKHSdiYmKP3lxX3p7Z1mGqpqtOXWqiTpGMFJhaRUwKiUEwUW9viMjJR4mQCvHySC9JCRqFRpv1CfYExEAOw==";
-app.OBJECT_IMAGES.push(houseImage_1);
-
-let houseImage_2 = new Image();
-houseImage_2.src = "data:image/gif;base64,R0lGODlhEAAQALMAAAAAAP///0IpMRkQISkpQjpCY1prjLVrUnNCOv///wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAAEAAQAAAETTDJSYe1VF4rkBdDsnlkiXCdiaQrR3ZCbKKymYJDHcNzvrKfHU4mjG0uwqPldDoeDgODdHCCUi1Pz6VpfXq/4KVqfCkQCubzOY1RukMRADs=";
-app.OBJECT_IMAGES.push(houseImage_2);
-
-let characterImage_1 = new Image();
-characterImage_1.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///60hMTExUkpKc6WtSmtjMf/Orc5rOv+llJxCOmspKf///wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAMACwAAAAACAAIAAAEIpABRRWQa9F8gTiHcEkJmHSFQRBGAQDHsA5Hh7w3o7+vHgEAOw==";
-app.OBJECT_IMAGES.push(characterImage_1);
-
-let characterImage_2 = new Image();
-characterImage_2.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///zEhMZyttcXezuaUSs5rOmspKf///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAIACwAAAAACAAIAAAEHxCQSQECIw97TykHBxifYUkDIaQAUKTEUJzpKrY4EgEAOw==";
-app.OBJECT_IMAGES.push(characterImage_2);
-
-let characterImage_3 = new Image();
-characterImage_3.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///60hMTEhMUIxSsXezq2Ue/+llJRra////wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAACAAIAAAEHjAlQIGc5Zxip9Yd8B0WYCAEgRjUMaQDOQkUfd1SBAA7";
-app.OBJECT_IMAGES.push(characterImage_3);
-
-let characterImage_4 = new Image();
-characterImage_4.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///++EnOat72tCc5RarZyttcXezpxCOv///wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAACAAIAAAEHDAlYAyQ8yB07tybB4DINRZoUY7CMAgrIc/eVEcAOw==";
-app.OBJECT_IMAGES.push(characterImage_4);
-
-let foodImage_0 = new Image();
-foodImage_0.src = "data:image/gif;base64,R0lGODlhCAAIAKIAAAAAAP////8ASnshUqXWxf/Orf///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAACAAIAAADE2i63C3iFcgGHAqboQ3x3McQYgIAOw==";
-app.OBJECT_IMAGES.push(foodImage_0);
-
-let foodImage_1 = new Image();
-foodImage_1.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP////8ASv9zpXshUiEpUqXWxf/Orf///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAIACwAAAAACAAIAAAEGhBJIaQVRxCLqL7esHUZYV7mKBlFYVhGSrwRADs=";
-app.OBJECT_IMAGES.push(foodImage_1);
-
 app.objects = []
 for(let i=0; i<app.w_h; i++){
 	app.objects.push([]);
@@ -265,24 +200,41 @@ for(let i=0; i<app.w_h; i++){
 	}
 }
 
-app.objects[10][10] = {i:0, r:1};
-app.objects[10][11] = {i:0, r:0};
-app.objects[10][40] = {i:0, r:1};
-app.objects[10][41] = {i:0, r:0};
-app.objects[20][30] = {i:1, r:1};
-app.objects[30][70] = {i:2, r:1};
-app.objects[30][71] = {i:2, r:0};
-app.objects[29][70] = {i:2, r:0};
-app.objects[29][71] = {i:2, r:0};
-app.objects[20][25] = {i:2, r:1};
-app.objects[20][26] = {i:2, r:0};
-app.objects[19][25] = {i:2, r:0};
-app.objects[19][26] = {i:2, r:0};
-app.objects[30][90] = {i:2, r:1};
-app.objects[30][91] = {i:2, r:0};
-app.objects[29][90] = {i:2, r:0};
-app.objects[29][91] = {i:2, r:0};
-app.objects[20][50] = {i:4, r:1};
+app.isOutside = function (x, y) {
+	if(x<0 || y<0 || x>=app.w_w || y>=app.w_h)
+		return true;
+	return false;
+},
+
+new app.Tree(3, 3, 0, false);
+new app.Tree(6, 8, 0, false);
+new app.Tree(13, 23, 1, false);
+new app.Tree(33, 39, 1, false);
+new app.Tree(83, 21, 1, false);
+new app.Tree(95, 33, 1, false);
+new app.Tree(43, 16, 0, false);
+new app.Tree(10, 25, 0, false);
+new app.Tree(103, 20, 0, false);
+new app.Tree(111, 12, 0, false);
+new app.Stone(13, 5, 0);
+new app.Stone(43, 7, 1);
+new app.Stone(63, 23, 1);
+new app.Stone(95, 15, 2);
+new app.House(12, 10, 1, 0);
+new app.House(33, 30, 2, 1);
+new app.Food(3, 37, 0);
+new app.Food(33, 37, 1);
+new app.Food(99, 36, 0);
+new app.Food(12, 12, 1);
+new app.Food(16, 15, 1);
+new app.Food(23, 20, 1);
+new app.Food(53, 34, 1);
+new app.Food(23, 35, 0);
+new app.Person(33, 8, 1);
+new app.Person(63, 14, 2);
+new app.Person(21, 11, 3);
+new app.Person(1, 29, 4);
+
 
 app.PLAYER_IMAGES = [];
 

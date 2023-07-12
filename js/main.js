@@ -20,7 +20,6 @@ app.topDown = {
 	GAME_STATE_MENU : 1,
 	GAME_STATE_GAME : 2,
 	GAME_STATE_DEAD : 3,
-	GAME_STATE_SHOP : 4,
 	
 	// Debug allows for:
 	// Enemies to be seen
@@ -29,18 +28,10 @@ app.topDown = {
 	// Keep the score of enemies killed
 	score : 0,
 	mouseData: { x: 0, y:0 },
-	// Enemies
-	enemies : [],
-	houseSpawnRate : 1,
-	maxEnemies: 15,
-	houseImage: undefined,
 	
 	waveAmount: 12,
 	houseKills: 0,
 	currentWave: 1,
-	// How many enemies does it take for the 
-	// spawn rate to increase
-	//houseSpawnIncrement : 50,
 	
 	player: undefined,
 	playerTrees : [],
@@ -52,8 +43,6 @@ app.topDown = {
 	// Emitters
 	emitters: [],
 	
-	//Shop
-	shop : undefined,
 	canvas : undefined,
 	ctx : undefined,
 	dt : 1/60.0,
@@ -74,14 +63,8 @@ app.topDown = {
 		this.player.init();
 		
 		var image = new Image();
-		image.src = app.TERRAIN_IMAGES['house'];
-		this.houseImage = image;
-		
-		var image = new Image();
 		image.src = app.TERRAIN_IMAGES['background'];
 		this.backgroundImage = image;
-		this.shop = app.shop;
-		this.shop.init(this.player, this.WIDTH, this.HEIGHT);
 		this.update();
 	},
 	
@@ -109,11 +92,9 @@ app.topDown = {
 			this.player.update(this.dt);
 			if(!this.player.chatStatus) {
 				this.moveSprites();
-				this.doAction();
+				this.player.doAction();
 			}
 			
-			this.checkForCollisions();
-
 			let posX = Math.floor(this.player.position.x/app.t_s);
 			let posY = Math.floor(this.player.position.y/app.t_s);
 			if(posX<(this.W_W/2)){
@@ -164,37 +145,12 @@ app.topDown = {
 			else if(this.houseKills == this.waveAmount)
 			{
 				this.currentWave++;
-				this.currentGameState = this.GAME_STATE_SHOP;
 			}
 		}
 		// Game Over Screen
 		else if(this.currentGameState == this.GAME_STATE_DEAD)
 		{
 			this.drawGameOverScreen(this.ctx);
-		}
-		else if(this.currentGameState == this.GAME_STATE_SHOP)
-		{
-			if(!this.backgroundImage)
-			{
-				app.draw.backgroundGradient(this.ctx,this.WIDTH,this.HEIGHT);
-			}
-			else
-			{
-				this.drawBackground(this.ctx, this.backgroundImage);
-			}
-			
-			this.shop.drawShopScreen(this.ctx, this.score);
-			if(this.shop.returnToGame)
-			{
-				this.waveAmount = this.ENEMY_WAVE_INC * this.waveAmount;
-				this.houseKills = 0;
-				this.shop.returnToGame = false;
-				this.player.setSpeed(this.shop.movementSpeed.purchased);
-				this.fire_rate = this.BEG_FIRE_RATE + (0.05 * this.shop.fireSpeed.purchased);
-				this.houseSpawnRate+= 0.2;
-				this.player.health = 100;
-				this.currentGameState = this.GAME_STATE_GAME;
-			}
 		}
 		
 		// Loop the game
@@ -303,8 +259,7 @@ app.topDown = {
 		for(let i=this.O_H; i<(this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++){
 			for(let j=this.O_W; j<(this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++){
 				if(app.objects[i][j] != null && app.objects[i][j].r == 1){
-					let objectName = app.objects[i][j].i;
-					this.ctx.drawImage(app.OBJECT_IMAGES[objectName], (j-this.O_W)*app.t_s-this.E_W, (i-this.O_H)*app.t_s-this.E_H + app.t_s - app.OBJECT_IMAGES[objectName].height, app.OBJECT_IMAGES[objectName].width, app.OBJECT_IMAGES[objectName].height);
+					app.objects[i][j].o.draw(this.ctx, this.O_W, this.O_H, this.E_W, this.E_H);
 				}
 				if(j==posX && i == posY){
 					this.ctx.globalAlpha = 1.0;
@@ -339,43 +294,6 @@ app.topDown = {
 	moveSprites : function(){
 		// Move player
 		this.movePlayer();
-		
-
-		// Enemies
-		// Spawn enemies
-		// this.spawnEnemies();
-		
-		// for(var i = 0; i < this.enemies.length; i++)
-		// {
-		// 	this.enemies[i].update(this.dt);
-		// }
-		
-		// this.enemies = this.enemies.filter(function(house){
-		// 	return house.active;
-		// });
-		
-		// // Trees
-		// // Shoot Trees
-		// this.cooldown --;
-		// if(this.cooldown <= 0 && app.keydown[app.KEYBOARD.KEY_SPACE])
-		// {	
-		// 	this.shoot(this.player.position.x, this.player.position.y);
-		// }
-		
-		// // Move trees
-		// for(var i = 0; i < this.playerTrees.length; i++)
-		// {
-		// 	this.playerTrees[i].update(this.dt);
-		// }
-		
-		// this.playerTrees = this.playerTrees.filter(function(tree) {
-		// 	return tree.active;
-		// });
-		
-		// // Emitters
-		// this.emitters = this.emitters.filter(function(emitter) {
-		// 	return emitter.active;
-		// });
 	},
 	
 	// Triggered when the player clicks the mouse
@@ -388,10 +306,6 @@ app.topDown = {
 		// If in the game screen, shoot a tree
 		else if(this.currentGameState == this.GAME_STATE_GAME)
 		{
-			if(this.cooldown <= 0)
-			{
-				this.shoot(this.player.position.x, this.player.position.y);
-			}
 				
 		}
 		// If in the game over screen, reset the game and go to the menu
@@ -404,11 +318,6 @@ app.topDown = {
 			this.currentWave = 1;
 			this.houseKills = 0;
 			this.currentGameState = app.topDown.GAME_STATE_MENU;
-		}
-		// Check for button clicks in the shop menu
-		else if(this.currentGameState == this.GAME_STATE_SHOP)
-		{
-			this.score = this.shop.checkButtonClicked(this.mouseData.x, this.mouseData.y, this.score);
 		}
 	},
 	
@@ -438,138 +347,6 @@ app.topDown = {
 		this.player.keepOnScreen();
 	},
 
-	// Takes care of player movement on key press
-	// Also keeps the player on screen
-	doAction: function(){
-		if(app.keydown[app.KEYBOARD.KEY_CREATE])
-		{
-			let x = Math.floor(this.player.position.x/app.t_s);
-			let y = Math.floor(this.player.position.y/app.t_s);
-			for(let i=0; i<2; i++){
-				for(let j=0; j<1; j++){
-					if(app.objects[y-j][x+i] != null)
-					{
-						return;
-					}
-				}
-			}
-			for(let i=0; i<2; i++){
-				for(let j=0; j<1; j++){
-					app.objects[y-j][x+i] = {i:3, r: (i==0 && j==0) ? 1 : 0};
-				}
-			}
-		}
-		else if(app.keydown[app.KEYBOARD.KEY_SPACE])
-		{
-			this.player.ask();
-		}
-	},
-
-	// Shoots a tree in the direction that the laser points
-	shoot : function(x,y){
-		// Get the direction of the velocity
-		var velocityDir = new app.Vector(this.mouseData.x, this.mouseData.y);
-		velocityDir = velocityDir.subtract(this.player.position);
-		
-		// Create the tree
-		this.playerTrees.push(new app.Tree(x, y, velocityDir));
-		
-		if(this.shop.treeSpread.purchased == 1)
-		{
-			var treeAngle = velocityDir.angle();
-			var treeMag = velocityDir.magnitude();
-			console.log(treeAngle);
-			// Get the vectors for the new trees
-			var treeTwoVec = new app.Vector(treeMag * Math.cos(treeAngle + Math.PI / 6), treeMag * Math.sin(treeAngle + Math.PI / 6));
-			var treeThreeVec = new app.Vector(treeMag * Math.cos(treeAngle - Math.PI / 6), treeMag * Math.sin(treeAngle - Math.PI / 6));
-			
-			// Create the trees
-			this.playerTrees.push(new app.Tree(x, y, treeTwoVec));
-			this.playerTrees.push(new app.Tree(x, y, treeThreeVec));
-		}
-		
-		// Set cooldown for the tree
-		this.cooldown = 60/this.fire_rate;
-		// createjs.Sound.play("tree", {volume: 0.3});
-	},
-		
-	// Checks for multiple types of collisions
-	// Trees and enemies --- If they collide, create an emitter for a death affect
-	// Enemies and player --- Decrement the player's health
-	checkForCollisions : function() {	
-		var self =  this;
-		// Trees and Enemies
-		this.playerTrees.forEach(function(tree) {
-			self.enemies.forEach(function(house) {
-				if(self.collides(tree,house))
-				{
-					// Remove tree
-					tree.active = false;
-					
-					// Add score
-					self.score++;
-					
-					// Get rid of house
-					house.explode();
-					
-					// Create an emitter on house death
-					var deathEmitter = new app.Emitter(house.position.x, house.position.y);
-					deathEmitter.red = 0;
-					deathEmitter.blue = 100;
-					deathEmitter.green = 0;
-					deathEmitter.lifeTime = 500;
-					deathEmitter.expansionrate = 0.5;
-					deathEmitter.numParticles = 50;
-					deathEmitter.xRange = 1;
-					deathEmitter.yRange = 2;
-					deathEmitter.useCircles = true;
-					deathEmitter.useSquareds = false;
-					
-					deathEmitter.createParticles({x:house.position.x, y:house.position.y});
-					// Since house died, lower wave count
-					self.houseKills++;
-					self.emitters.push(deathEmitter);
-				}
-			});
-		});
-		// Enemies and Player
-		this.enemies.forEach(function(house){
-			if(self.collides(house, self.player))
-			{
-				house.explode();
-				var hurtEmitter = new app.Emitter(self.player.position.x, self.player.position.y);
-				hurtEmitter.red = 100;
-				hurtEmitter.blue = 0;
-				hurtEmitter.green = 0;
-				hurtEmitter.lifetime = 100;
-				hurtEmitter.expansionrate = 0.2;
-				hurtEmitter.numParticles = 25;
-				hurtEmitter.startRadius = 2;
-				hurtEmitter.xRange = 2;
-				hurtEmitter.yRange = 1;
-				hurtEmitter.minXspeed = -2;
-				hurtEmitter.maxXspeed = 2;
-				hurtEmitter.minYspeed = -1;
-				hurtEmitter.maxYspeed = 1;
-				hurtEmitter.useCircles = true;
-				hurtEmitter.useSquares = false;
-				
-				hurtEmitter.createParticles({x:self.player.position.x, y:self.player.position.y});
-				
-				self.emitters.push(hurtEmitter);
-				self.player.health -= house.damage;
-				// Since house died, lower wave count
-				self.houseKills++;
-				if(self.player.health < 0)
-				{
-					self.player.health = 0;
-				}
-			}
-		});
-		
-		
-	},
-	
 	// Determines whether two things collide or not
 	collides: function (a, b) {
 		var distance = a.position.subtract(b.position);
@@ -579,94 +356,7 @@ app.topDown = {
 		}
 		return false;
 	},
-	
-	// In charge of spawning enemies
-	spawnEnemies: function(){
-		// Can more enemies be spawned this wave
-		if(this.houseKills + this.enemies.length < this.waveAmount)
-		{
-			// Randomly spawn enemies based on a spawn rate
-			if(Math.random() < this.houseSpawnRate/60){
-				var negate = 1;
-				var random = Math.random();
-				var spawn = {x:0, y:0};
-				spawn = this.getSpawnX(random);
-				
-				var randomWidth = Math.floor(Math.random() * this.WIDTH + this.WIDTH * negate);
-				if(this.DEBUG && this.enemies.length < this.maxEnemies)
-				{
-					this.enemies.push(new app.House(this.houseImage, spawn.x, spawn.y, this.player));
-				}
-				else if(!this.DEBUG)
-				{
-					this.enemies.push(new app.House(this.houseImage, spawn.x, spawn.y, this.player));	
-				}				
-				
-			}
-		}
-	},
-	
-	// Determines the x coordinate of a spawn point
-	getSpawnX: function(random){
-		var randomWidth = 0;
-		var randomHeight = 0;
-		// Determines if the height of the spawn point is above, below, or at canvas level
-		if(random >= 0.3 && random <= 0.6)
-		{
-			randomHeight = Math.floor(Math.random() * this.HEIGHT);
-			randomWidth = this.getSpawnY(true);
-		}
-		else if(random < 0.3)
-		{
-			randomHeight = Math.floor(Math.random() * this.HEIGHT - this.HEIGHT);
-			randomWidth = this.getSpawnY(false);
-		}
-		else if(random > 0.6)
-		{
-			randomHeight = Math.floor(Math.random() * this.HEIGHT + this.HEIGHT);
-			randomWidth = this.getSpawnY(false);
-		}
-		return {x:randomWidth, y:randomHeight};
-	},
-	
-	// Determines the y coordinate of a spawn point
-	getSpawnY: function(onScreen)
-	{
-		var randomWidth = 0;
-		// If the spawn height is off the screen, the width can be anywhere
-		if(!onScreen)
-		{
-			var random = Math.random();
-			if(random >= 0.3 && random <= 0.6)
-			{
-				randomWidth = Math.floor(Math.random() * this.WIDTH);
-			}
-			else if(random < 0.3)
-			{
-				randomWidth = Math.floor(Math.random() * this.WIDTH + this.WIDTH);
-			}
-			else if(random > 0.6)
-			{
-				randomWidth = Math.floor(Math.random() * this.WIDTH - this.WIDTH);
-			}
-		}
-		else
-		{
-			// If the spawn height is not above or below canvas, place the width off the screen
-			var random = Math.random();
-			if(random >= 0.5)
-			{
-				randomWidth = Math.floor(Math.random() * this.WIDTH + this.WIDTH);
-			}
-			else
-			{
-				randomWidth = Math.floor(Math.random() * this.WIDTH - this.WIDTH);
-			}
-		}
-		
-		return randomWidth;
-	},
-	
+
 	// Plays the background music
 	startSoundtrack: function(){
 		// createjs.Sound.stop();

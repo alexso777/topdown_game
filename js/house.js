@@ -1,87 +1,86 @@
+// house.js
+// dependencies: none
+
 "use strict";
+var app = app || {};
+
+let houseImage = new Image();
+houseImage.src = "data:image/gif;base64,R0lGODlhEAAQAKIAAAAAAP///0IpMRkQIbVrUnNCOv///wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAGACwAAAAAEAAQAAADUGi6NsNwuVJcVE4UTYiVA0VpVGcNAkkWXemhY+ya4ZqyhJttqTDhlEzv96OlirlKqNIIDTpQj+/R0DwdHimzWnllYVSw12TFWB3oHbV5YRsSADs=";
+
+let houseImage_1 = new Image();
+houseImage_1.src = "data:image/gif;base64,R0lGODlhEAAgALMAAAAAAP///0IpMRkQIealc7VrUnNCOtbOzvfv7+be3v///wAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAKACwAAAAAEAAgAAAEtVDJOeqYGI9iTLkZJXTcFyrD2HkeKAqCVRWmlBrjQNAbd92qjUFI+wxwnVghxvLdOrPhsWTBDQ7HK5Y1s2BlYGFuOqURKjvacIw0hi0JS22QSBziwzrCYrvjPwkIexoHdykfCIEuKH5kcXGEWGZ0A4MUhjJ6i1p1nYGWKHSdiYmKP3lxX3p7Z1mGqpqtOXWqiTpGMFJhaRUwKiUEwUW9viMjJR4mQCvHySC9JCRqFRpv1CfYExEAOw==";
+
+let houseImage_2 = new Image();
+houseImage_2.src = "data:image/gif;base64,R0lGODlhEAAQALMAAAAAAP///0IpMRkQISkpQjpCY1prjLVrUnNCOv///wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAAEAAQAAAETTDJSYe1VF4rkBdDsnlkiXCdiaQrR3ZCbKKymYJDHcNzvrKfHU4mjG0uwqPldDoeDgODdHCCUi1Pz6VpfXq/4KVqfCkQCubzOY1RukMRADs=";
+
+app.HouseData = {
+	type: "House",
+	houseImages: [houseImage, houseImage_1,houseImage_2],
+	checkSpace(posX, posY, direction) {
+		if(direction==0){
+			posX = posX;
+			posY = posY-1;
+		} else if(direction==1){
+			posX = posX+1;
+			posY = posY;
+		} else if(direction==2){
+			posX = posX;
+			posY = posY+1;
+		} else if(direction==3){
+			posX = posX-2;
+			posY = posY;
+		}
+
+		if(app.isOutside(posX, posY)) return false;
+		for(let i=0; i<2; i++){
+			if(app.objects[posY][posX+i] != null)
+				return false;
+		}
+		return true;
+	}
+}
 
 app.House = function(){
-	// Set up everything for the house
-	function House(image, xPos, yPos, player){
-		this.active = true;
-		this.age = Math.floor(Math.random() * 128);
-		
-		this.color = "#A2B";
-		this.position = new app.Vector(xPos, yPos);
-		this.velocity = new app.Vector(0,0);
-		this.acceleration = new app.Vector(0,0);
-		
-		this.image = image;
-		this.width = 40;
-		this.height = 40;
-		this.radius = (this.width / 2 + this.height / 2) / 2
-		this.damage = 10;
-		
-		this.MAXSPEED = 95;
-		this.FRICTION = 60;
-		this.player = player;
-	};
+	
+	// Set up the house
+	function House(posX, posY, style, direction){
+		this.type = app.HouseData.type;
+		this.style = style;
+		this.width = 2;
+		this.height = 1;
+		if(direction==0){
+			this.posX = posX;
+			this.posY = posY-1;
+		} else if(direction==1){
+			this.posX = posX+1;
+			this.posY = posY;
+		} else if(direction==2){
+			this.posX = posX;
+			this.posY = posY+1;
+		} else if(direction==3){
+			this.posX = posX-2;
+			this.posY = posY;
+		}
+		for(let i=0; i<2; i++){
+			app.objects[this.posY][this.posX+i] = {o:this, r: (i==0) ? 1 : 0};
+		}
+	} // end House Constructor
+	
 	
 	var p = House.prototype;
-	
+		
 	// Draw the house
-	p.draw = function(ctx){
-		var halfW = this.width / 2;
-		var halfH = this.height / 2;
-		//console.log(this.position);
-		var vec = this.player.position.subtract(this.position);
-		var angle;
-		
-		if(vec.y >= 0)
-		{
-			angle = vec.angle();
-		}
-		else
-		{
-			angle = -vec.angle();
-		}
-		
-		ctx.save();
-		// Translate and rotate the house
-		ctx.translate(this.position.x, this.position.y);
-		ctx.rotate(angle);
-		
-		if(!this.image){
-			app.draw.rect(ctx, -halfW, -halfH, this.width, this.height, this.color);		
-		}
-		else
-		{
-			ctx.drawImage(this.image, -halfW, -halfH, this.width, this.height)
-		}
-		ctx.restore();
+	p.draw = function(ctx, O_W, O_H, E_W, E_H) {
+		let image = app.HouseData.houseImages[this.style];
+		ctx.drawImage(image, (this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H + app.t_s - image.height, image.width, image.height);
 	};
-	
-	// Move the house
-	p.update = function(dt) {
-		
-		// Move towards the player
-		var desiredVector = this.player.position.subtract(this.position);
-		desiredVector = desiredVector.normalize();
-		desiredVector = desiredVector.scalarMult(this.MAXSPEED);
-		desiredVector = desiredVector.subtract(this.velocity);
-		
-		this.acceleration = this.acceleration.add(desiredVector);
-		// Move the house
-		this.velocity = this.velocity.add(this.acceleration);
-		this.velocity = this.velocity.clamp(this.MAXSPEED);
-		var vel = this.velocity.scalarMult(dt);
-		this.position = this.position.add(vel);
-		this.velocity = this.velocity.scalarMult(1/this.FRICTION);
-		this.acceleration = this.acceleration.reset();
-	};
-	
-	// Sets the house to be removed from the array
-	p.explode = function(){
-		
-		this.active = false;
-	};
-	
-	
-	
-	return House;
+
+	p.doAction = function() {
+		if(this.style == 1){
+			window.open("https://tetris.com/play-tetris", "_blank");
+		} else if (this.style == 2){
+			window.open("https://supermario-game.com/", "_blank");
+		}
+	}	
+	return House; 
 }();

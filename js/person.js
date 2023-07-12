@@ -1,123 +1,54 @@
+// person.js
+// dependencies: none
+
 "use strict";
 var app = app || {};
 
-app.people = {
-	color: "black",
-	position: undefined,
-	velocity: undefined,
-	acceleration: undefined,
-	width: 40,
-	height: 40,
-	radius: undefined,
-	speed: 150,
-	health: 100,
-	image: undefined,
-	
-	MAXSPEED: 100,
-	FRICTION: 60,
-	
-	// Sets up the people
-	init: function(){
-		this.position = new app.Vector(400,226);
-		this.velocity = new app.Vector(0,0);
-		this.acceleration = new app.Vector(0,0);
-		this.radius = (this.height / 2 + this.width / 2 ) / 2;
-	},
-	
-	// Updates the peoples position and other vectors
-	update: function(dt){
+let characterImage = new Image();
+characterImage.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///zExUkpKc5yttcXezuaUSs5rOpxCOmspKZRra////wAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAALACwAAAAACAAIAAAEH3AtQIGcJhsLjv9cgiCJNY0jVxDDQBQUIrQCwikUvkQAOw==";
 
-		this.velocity = this.velocity.add(this.acceleration);
-		this.velocity = this.velocity.clamp(this.MAXSPEED);
-		var vel = this.velocity.scalarMult(dt);
-		this.position = this.position.add(vel);
-		this.velocity = this.velocity.scalarMult(1/this.FRICTION);
-		this.acceleration = this.acceleration.reset();
-	},
+let characterImage_1 = new Image();
+characterImage_1.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///60hMTExUkpKc6WtSmtjMf/Orc5rOv+llJxCOmspKf///wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAMACwAAAAACAAIAAAEIpABRRWQa9F8gTiHcEkJmHSFQRBGAQDHsA5Hh7w3o7+vHgEAOw==";
+
+let characterImage_2 = new Image();
+characterImage_2.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///zEhMZyttcXezuaUSs5rOmspKf///wAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAIACwAAAAACAAIAAAEHxCQSQECIw97TykHBxifYUkDIaQAUKTEUJzpKrY4EgEAOw==";
+
+let characterImage_3 = new Image();
+characterImage_3.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///60hMTEhMUIxSsXezq2Ue/+llJRra////wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAACAAIAAAEHjAlQIGc5Zxip9Yd8B0WYCAEgRjUMaQDOQkUfd1SBAA7";
+
+let characterImage_4 = new Image();
+characterImage_4.src = "data:image/gif;base64,R0lGODlhCAAIALMAAAAAAP///++EnOat72tCc5RarZyttcXezpxCOv///wAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAAJACwAAAAACAAIAAAEHDAlYAyQ8yB07tybB4DINRZoUY7CMAgrIc/eVEcAOw==";
+
+app.PersonData = {
+	type: "Person",
+	personImages: [characterImage, characterImage_1, characterImage_2, characterImage_3, characterImage_4],
+}
+
+app.Person = function(){
 	
-	// Draws the people
-	draw: function(ctx, mouse){
-		// Draw from the middle
-		var halfW = this.width / 2;
-		var halfH = this.height / 2;
+	// Set up the person
+	function Person(posX, posY, style){
+		this.posX = posX;
+		this.posY = posY;
+		this.type = app.PersonData.type;
+		this.style = style;
+		this.width = 1;
+		this.height = 1;
+		app.objects[posY][posX] = {o:this, r:1};
+	} // end Person Constructor
+	
+	
+	var p = Person.prototype;
 		
-		// Create a vector from the mouse position
-		var mouseVec = new app.Vector(mouse.x, mouse.y);
-		// Create a vector that is the position subtracted from the mouse position
-		var vec = mouseVec.subtract(this.position);
-		// Get the angle to that vector
-		var angle;
-		if(vec.y >=0)
-		{
-			angle = vec.angle();
-		}
-		else
-		{
-			angle = -vec.angle();
-		}
-		ctx.save();
-		
-		// Translate and rotate the character
-		ctx.translate(this.position.x, this.position.y);
-		ctx.rotate(angle);
-		if(!this.image)
-		{
-			app.draw.rect(ctx, -halfW, -halfH, this.width, this.height, this.color);
-		}
-		else
-		{	
-			ctx.drawImage(this.image, -halfW, -halfH, this.width, this.height)
-		}
-		
-		ctx.restore();
-	},
-	
-	// Moves the people to the left
-	moveLeft: function(dt){
-		this.acceleration.x -= this.speed;
-	},
-	
-	// Moves the people to the right
-	moveRight: function(dt){
-		this.acceleration.x += this.speed;
-	},
-	
-	// Moves the people up
-	moveUp: function(dt){
-		this.acceleration.y -= this.speed;
-	},
-	
-	// Moves the people to the right
-	moveDown: function(dt){
-		this.acceleration.y += this.speed;
-	},
-	
-	// Keeps the people from leaving the screen
-	keepOnScreen: function(screenWidth, screenHeight)
-	{
-		var halfW = this.width / 2;
-		var halfH = this.height / 2;
-		if(this.position.x - halfW < 0)
-		{
-			this.position.x = halfW;
-		}
-		else if(this.position.x + halfW > screenWidth)
-		{
-			this.position.x = screenWidth - halfW;
-		}
-		
-		if(this.position.y - halfH < 0)
-		{
-			this.position.y = halfH;
-		}
-		else if(this.position.y + halfH > screenHeight)
-		{
-			this.position.y = screenHeight - halfH;
-		}
-	},
-	
-	// used to change the speed of the people(Purchasing the upgrade)
-	setSpeed: function(number){
-		this.MAXSPEED = 100 + (number * 20);
+	// Draw the person
+	p.draw = function(ctx, O_W, O_H, E_W, E_H) {
+		let image = app.PersonData.personImages[this.style];
+		ctx.drawImage(image, (this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H + app.t_s - image.height, image.width, image.height);
+	};
+
+	p.doAction = function() {
+		app.player.chatStatus = true;
 	}
-};
+	
+	return Person; 
+}();
