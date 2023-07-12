@@ -162,6 +162,8 @@ app.player = {
 	isCollision: function (x, y) {
 		if(app.objects[y][x] != null)
 			return true;
+		if(app.wholeObstacle.includes(app.terrains[y*app.w_w+x]))
+			return true;
 		return false;
 	},
 	
