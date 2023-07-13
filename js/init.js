@@ -18,7 +18,7 @@ app.KEYBOARD = {
 	"KEY_DOWN": 40,
 	"KEY_SPACE": 32,
 	"KEY_ENTER": 13,
-	"KEY_CREATE": 67
+	"KEY_BUILD": 66
 };
 
 app.t_s = 8;

@@ -110,12 +110,11 @@ app.player = {
 	// Also keeps the player on screen
 	doAction: function(){
 		if(this.workFrame == 0){
-			if(app.keydown[app.KEYBOARD.KEY_CREATE])
+			if(app.keydown[app.KEYBOARD.KEY_BUILD])
 			{
 				let x = Math.floor(this.position.x/app.t_s);
 				let y = Math.floor(this.position.y/app.t_s);
 				if(app.HouseData.checkSpace(x, y, this.direction)){
-					console.log(app.wood, app.stone, app.social);
 					if(app.wood >= 20 && app.stone >= 30){
 						new app.House(x, y, 0, this.direction);
 						app.wood -= 20;
