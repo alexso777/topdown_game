@@ -20,6 +20,7 @@ app.TreeData = {
 	type: "Tree",
 	treeImages: [treeImage,treeImage_1],
 	rootImages: [treeRootImage, treeRootImage_1],
+	health: 4,
 }
 app.Tree = function(){
 	
@@ -32,6 +33,7 @@ app.Tree = function(){
 		this.isRoot = isRoot;
 		this.width = 2;
 		this.height = 1;
+		this.health = app.TreeData.health;
 		app.objects[posY][posX] = {o: this, r: 1};
 		app.objects[posY][posX+1] = {o: this, r: 0};
 	} // end Tree Constructor
@@ -47,19 +49,27 @@ app.Tree = function(){
 		} else {
 			image = app.TreeData.treeImages[this.style];
 		}
+		if(this.health!= app.TreeData.health && this.health>0){
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "white");
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width*this.health/app.TreeData.health, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "red");
+		}
 		ctx.drawImage(image, (this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H + app.t_s - image.height, image.width, image.height);
 	};
 
 	p.doAction = function() {
 		app.player.workFrame = 1;
-		app.wood += 5;
-		if(!this.isRoot){
-			this.isRoot = true;
-			app.objects[this.posY][this.posX+1] = null;
-		} else {
-			app.objects[this.posY][this.posX] = null;
-			app.objects[this.posY][this.posX+1] = null;
-			delete this;
+		this.health--;
+		if(this.health<=0){
+			app.wood += 5;
+			if(!this.isRoot){
+				this.isRoot = true;
+				app.objects[this.posY][this.posX+1] = null;
+				this.health = app.TreeData.health;
+			} else {
+				app.objects[this.posY][this.posX] = null;
+				app.objects[this.posY][this.posX+1] = null;
+				delete this;
+			}
 		}
 	}
 	
