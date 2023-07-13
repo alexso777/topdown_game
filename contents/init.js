@@ -12,9 +12,9 @@ var app = app || {};
 // CONSTANTS
 // Use w-a-s-d
 app.KEYBOARD = {
-	"KEY_LEFT": 37, 
-	"KEY_UP": 38, 
-	"KEY_RIGHT": 39, 
+	"KEY_LEFT": 37,
+	"KEY_UP": 38,
+	"KEY_RIGHT": 39,
 	"KEY_DOWN": 40,
 	"KEY_SPACE": 32,
 	"KEY_ENTER": 13,
@@ -115,29 +115,29 @@ tileImage = new Image();
 tileImage.src = "data:image/x-ms-bmp;base64,Qk24AAAAAAAAADYAAAAoAAAACAAAAAgAAAABABAAAAAAAIIAAAASCwAAEgsAAAAAAAAAAAAAnheeF3sCnhd7AnsCewJ7Ap4XewJ7Ap4XewJ7AnsCewKeF54XewJ7AnsCewJ7AnsCewJ7AnsCewJ7AnsCewJ7AnsCewJ7AnsCewJ7AnsCewJ7AnsCewKeF54XewJ7AnsCnhd7AnsCewJ7AnsCewJ7AnsCewKeF3sCnheeF54XewIAAA==";
 app.TERRAIN_IMAGES["C"] = tileImage;
 
-app.wholeObstacle = ["C", "A", "B"] ;
+app.wholeObstacle = ["C", "A", "B"];
 
 app.terrains = "\
-0111111111111111112CC###############111111111111111111111112\
-3444444444444444445CC###############444444444444444444444445\
-3444444444444444445AC###############444444444444444444444445\
-3444444444444444445CC###############444444444444444444444445\
-3444444444444444445AC###############444444444444444444444445\
-3444444444444444445CB###############444444444444444444444445\
-3444444444444444445CC###############444444444444444444444445\
-3444444444444444445CC###############444444444444444444444445\
-3444444444444444445CC###########4444444444444444444444444445\
-3444444444444444445AC############444444444444444444444444445\
-3444444444444444445CC#######44444444444444444444444444444445\
-3444444444444444445CC#####4444444444444444444444444444444445\
-3444444444444444449111111)4444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
-344444444444444444444444444444444444444444444444444444444445\
+011111111111111####CCABCCBABABCBBBBBBBBBBBBCCCAACACBBCABBACC\
+3444444444444445###CCBBBBCBAA#######34444444CBA#011111111112\
+3444444444444445###ACCBBCA############344444CA##344444444445\
+34444444444444445##CCBBBCB#############34444B###344444444445\
+34444444444444445##ABBBCB##############34444CC##344444444445\
+34444444444444445##BBCB###############344444CAB#344444444445\
+34444444444444445##CC###############3144444CBCA#344444444445\
+34444444448777775##CC###############344444444CA#344444444445\
+3444444445#########CC###########6111444444444AB3444444444445\
+3444444445#########AC############344444444444BC4444444444445\
+3444444445#########CC#######01111144444444444444444444444445\
+3444444444212#01115C######0144444444444444444444444444444445\
+3444444444445#244491#1111)4444444444444444444444444444444445\
+3444444444445#264444#444444444444444444444444444444444444445\
+3444444444444###############67777777744444444444444444444445\
+344444444444421111111112#02##########34444444444444444444445\
+344444444444444444444444#44111111111134444444444444444444445\
+344444444444444444444444#44444444444444444444444444444444445\
+344444444444444444444444#44444444444444444444444444444444445\
+344444444444444444444444144444444444444444444444444444444445\
 344444444444444444444444444444444444444444444444444444444445\
 344444444444444444444444444444444444444444444444444444444445\
 344444444444444444444444444444444444444444444444444444444445\
@@ -177,49 +177,289 @@ app.COVER_IMAGES["6"] = coverImage;
 
 app.covers = "\
 000000000500000000000000000000000000000000000000000000000000\
-000000004060000000000000000000000000000000000000000000000000\
-000001000000000000000000000046000000500000000000000000000000\
-000000000030000000000000000464000000606000000000000000000000\
-000000020000000000000000000000650000400000000000000000000000\
-000000000000000000000000000005554000000400000000000000000000\
-000500060004000000000000000000446060000000000000000000000000\
-006460005000000000000000000000000000050000000000000000000000\
-000460000005000200600000000000000000000000000000000000000000\
-000000000603000034000000000000000000000000000000000000000000\
-000000000023000003000000000000000000000000000000000000000000\
-000000000060400000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
-000000000000000000000000000000000000000000000000000000000000\
+045636456265465600000000000000004020600040040000000000000000\
+004564564264524210000000000000045634645565400000000035643200\
+045632654660152313000000000000000006464565650000002560000000\
+000404560405604000000000000000000000406000000000045000223400\
+000450600234060500000000000000000000000000000006063400246600\
+000520536654260000000000000000000000560026000000245006010200\
+006463456111111110000000000000000406000050000000024562345620\
+000455460100000000000000000000000000004000000000054500434420\
+000141600100000000000000000000000000000060403004563056432560\
+062514300100000000000000000060023000004563456650546456546240\
+012300000111001111100000000000000000004656024562565464524560\
+065656100000000000000000000045065460305636436624562456654650\
+000160030000000000000000000000000000000456350002456254625460\
+002304005010000000000000000000000000000024562456656654645620\
+002001000305002300000000000000000000045635645646245625646420\
+023060203600000000062300001111111111565234502500262045644260\
+036020400543200003450000000504566545655345634525602064554640\
+050300020000406065456456564565444545345665443050620540205640\
+023450303005003301230000000121230123560454565645604506456000\
+066004012033001612012302000123416512610045665456454565445660\
+000600230030546013420430123412651340050403005600634022103660\
+604020340602345000454460001236120531504640604060450560206040\
+043023405023460034603440040045606045645032602030502060040600\
+052034060234052034563400045604104524560456440406040560302640\
+012351266123600405045645045660650545004164665040001023063240\
+065560510132006000456123415161004506330456454504564564654650\
+016364560061020100000001324450045604050415604001450630454400\
+035565630060405001236314134045060405064020300546131056440000\
 000000000000000000000000000000000000000000000000000000000000"
 
 app.objects = []
-for(let i=0; i<app.w_h; i++){
+for (let i = 0; i < app.w_h; i++) {
 	app.objects.push([]);
-	for(let j=0; j<app.w_w; j++){
+	for (let j = 0; j < app.w_w; j++) {
 		app.objects[i].push(null);
 	}
 }
 
 app.isOutside = function (x, y) {
-	if(x<0 || y<0 || x>=app.w_w || y>=app.w_h)
+	if (x < 0 || y < 0 || x >= app.w_w || y >= app.w_h)
 		return true;
 	return false;
 },
+
+
+
+
+	new app.Tree(7, 8, 1, false);
+new app.Tree(7, 8, 0, false);
+new app.Tree(7, 9, 0, false);
+new app.Tree(7, 10, 0, false);
+new app.Tree(7, 11, 0, false);
+
+
+new app.Tree(4, 28, 0, false);
+new app.Tree(4, 24, 0, false);
+new app.Tree(3, 19, 0, false);
+new app.Tree(4, 27, 1, false);
+new app.Tree(6, 28, 0, false);
+new app.Tree(4, 24, 0, false);
+new app.Tree(5, 19, 1, false);
+new app.Tree(7, 27, 0, false);
+
+
+new app.Tree(8, 12, 0, false);
+new app.Tree(10, 12, 0, false);
+new app.Tree(14, 12, 0, false);
+new app.Tree(16, 12, 0, false);
+new app.Tree(18, 12, 0, false);
+
+new app.Tree(9, 6, 0, false);
+new app.Tree(11, 6, 0, false);
+new app.Tree(13, 6, 0, false);
+new app.Tree(15, 6, 0, false);
+
+new app.Tree(0, 1, 1, false);
+new app.Tree(0, 3, 1, false);
+new app.Tree(0, 5, 1, false);
+new app.Tree(0, 6, 1, false);
+new app.Tree(0, 8, 1, false);
+new app.Tree(0, 23, 1, false);
+new app.Tree(0, 14, 1, false);
+new app.Tree(0, 12, 1, false);
+new app.Tree(0, 16, 1, false);
+new app.Tree(0, 17, 1, false);
+new app.Tree(0, 25, 1, false);
+
+
+new app.Tree(2, 6, 1, false);
+new app.Tree(2, 7, 1, false);
+new app.Tree(2, 13, 1, false);
+new app.Tree(2, 19, 0, false);
+new app.Tree(2, 27, 1, false);
+new app.Tree(2, 14, 1, false);
+new app.Tree(2, 12, 0, false);
+new app.Tree(2, 11, 1, false);
+new app.Tree(2, 25, 0, false);
+
+new app.Tree(15, 4, 1, false);
+
+new app.Tree(4, 4, 0, false);
+new app.Tree(3, 2, 0, false);
+new app.Tree(6, 5, 1, false);
+new app.Tree(6, 3, 0, false);
+new app.Tree(3, 5, 0, false);
+
+new app.Tree(4, 1, 0, false);
+new app.Tree(8, 1, 0, false);
+new app.Tree(12, 1, 0, false);
+new app.Tree(14, 1, 0, false);
+
+
+new app.Tree(58, 28, 0, false);
+new app.Tree(58, 18, 0, false);
+new app.Tree(55, 28, 0, false);
+new app.Tree(52, 19, 0, false);
+new app.Tree(56, 14, 0, false);
+new app.Tree(55, 25, 0, false);
+new app.Tree(52, 15, 0, false);
+new app.Tree(56, 4, 0, false);
+new app.Tree(57, 25, 0, false);
+new app.Tree(56, 26, 0, false);
+new app.Tree(58, 21, 0, false);
+new app.Tree(52, 21, 0, false);
+new app.Tree(51, 13, 1, false);
+new app.Tree(48, 18, 0, false);
+new app.Tree(47, 18, 0, false);
+
+
+new app.Tree(10, 17, 0, false);
+new app.Tree(10, 16, 0, false);
+new app.Tree(10, 15, 0, false);
+new app.Tree(10, 24, 0, false);
+new app.Tree(10, 23, 0, false);
+
+new app.Tree(14, 13, 0, false);
+new app.Tree(14, 13, 0, false);
+new app.Tree(15, 13, 0, false);
+new app.Tree(16, 13, 0, false);
+new app.Tree(17, 13, 0, false);
+new app.Tree(18, 13, 0, false);
+new app.Tree(21, 13, 0, false);
+new app.Tree(22, 13, 0, false);
+new app.Tree(23, 13, 0, false);
+new app.Tree(24, 13, 0, false);
+new app.Tree(25, 13, 0, false);
+new app.Tree(26, 13, 0, false);
+new app.Tree(27, 13, 0, false);
+
+
+new app.Tree(14, 15, 0, false);
+new app.Tree(15, 15, 0, false);
+new app.Tree(16, 15, 0, false);
+new app.Tree(17, 15, 0, false);
+new app.Tree(18, 15, 0, false);
+new app.Tree(19, 15, 0, false);
+new app.Tree(20, 15, 0, false);
+new app.Tree(21, 15, 0, false);
+new app.Tree(22, 15, 0, false);
+new app.Tree(25, 15, 0, false);
+new app.Tree(25, 16, 0, false);
+new app.Tree(25, 17, 0, false);
+new app.Tree(25, 18, 0, false);
+new app.Tree(25, 19, 0, false);
+new app.Tree(22, 16, 0, false);
+new app.Tree(22, 17, 0, false);
+new app.Tree(22, 18, 0, false);
+new app.Tree(22, 19, 0, false);
+
+new app.Tree(28, 14, 0, false);
+new app.Tree(29, 14, 0, false);
+new app.Tree(30, 14, 0, false);
+new app.Tree(31, 14, 0, false);
+new app.Tree(32, 14, 0, false);
+
+
+
+new app.Tree(32, 24, 0, false);
+new app.Tree(37, 20, 0, false);
+new app.Tree(41, 16, 0, false);
+new app.Tree(36, 14, 0, false);
+new app.Tree(37, 18, 0, false);
+new app.Tree(34, 24, 0, false);
+new app.Tree(36, 27, 0, false);
+new app.Tree(42, 26, 0, false);
+new app.Tree(33, 24, 0, false);
+new app.Tree(38, 25, 0, false);
+
+new app.Tree(4, 8, 1, false);
+new app.Tree(11, 18, 0, false);
+new app.Tree(9, 6, 0, false);
+new app.Tree(14, 16, 1, false);
+
+new app.Tree(44, 8, 1, false);
+new app.Tree(41, 18, 0, false);
+new app.Tree(39, 6, 0, false);
+new app.Tree(44, 16, 1, false);
+new app.Tree(43, 6, 0, false);
+new app.Tree(40, 15, 0, false);
+new app.Tree(36, 16, 1, false);
+new app.Tree(44, 13, 0, false);
+
+new app.Tree(47, 28, 1, false);
+new app.Tree(46, 26, 0, false);
+new app.Tree(44, 12, 0, false);
+new app.Tree(46, 26, 0, false);
+new app.Tree(49, 23, 0, false);
+
+new app.Tree(54, 12, 0, false);
+new app.Tree(56, 6, 1, false);
+new app.Tree(59, 23, 0, false);
+new app.Tree(57, 12, 0, false);
+new app.Tree(54, 6, 0, false);
+new app.Tree(58, 15, 0, false);
+
+new app.Food(3, 3, 0);
+new app.Food(3, 5, 1);
+new app.Food(4, 4, 1);
+new app.Food(14, 3, 1);
+
+new app.Food(5, 23, 1);
+new app.Food(3, 28, 0);
+new app.Food(8, 24, 1);
+new app.Food(7, 15, 0);
+
+new app.Food(48, 23, 1);
+new app.Food(32, 21, 0);
+new app.Food(50, 4, 1);
+new app.Food(37, 7, 0);
+
+new app.Food(50, 25, 1);
+new app.Food(45, 21, 0);
+
+
+new app.Tree(11, 28, 0, false);
+new app.Tree(9, 16, 0, false);
+new app.Tree(14, 18, 1, false);
+
+
+new app.Stone(8, 3, 0);
+new app.Stone(9, 4, 2);
+new app.Stone(5, 16, 0);
+new app.Stone(6, 17, 1);
+new app.Stone(5, 17, 0);
+new app.Stone(8, 19, 2);
+
+new app.Stone(28, 23, 0);
+new app.Stone(29, 24, 2);
+new app.Stone(25, 26, 0);
+new app.Stone(26, 27, 1);
+new app.Stone(25, 27, 0);
+new app.Stone(18, 29, 2);
+
+new app.Stone(38, 23, 0);
+new app.Stone(39, 24, 2);
+new app.Stone(35, 16, 0);
+new app.Stone(36, 27, 1);
+new app.Stone(45, 27, 0);
+new app.Stone(48, 19, 2);
+
+new app.Tree(33, 26, 1, false);
+new app.Tree(35, 27, 1, false);
+new app.Tree(38, 28, 1, false);
+new app.Tree(34, 29, 0, false);
+new app.Tree(32, 26, 1, false);
+new app.Tree(45, 27, 1, false);
+
+new app.Tree(3, 26, 1, false);
+new app.Tree(5, 27, 1, false);
+new app.Tree(8, 28, 1, false);
+new app.Tree(4, 29, 0, false);
+new app.Tree(12, 26, 1, false);
+new app.Tree(15, 27, 1, false);
+new app.Tree(18, 28, 1, false);
+new app.Tree(14, 29, 0, false);
+new app.Tree(22, 29, 1, false);
+new app.Tree(26, 29, 1, false);
+new app.Tree(27, 28, 0, false);
+new app.Tree(21, 26, 1, false);
+new app.Stone(11, 23, 0);
+new app.Stone(9, 24, 2);
+new app.Stone(15, 26, 0);
+new app.Tree(8, 23, 0, false);
 
 new app.Person(1, 29, 4);
 new app.Tree(3, 3, 0, false);
@@ -227,12 +467,11 @@ new app.Food(3, 7, 0);
 new app.Tree(6, 8, 0, false);
 new app.Tree(10, 25, 0, false);
 new app.House(12, 10, 1, 0, 8);
-new app.Food(12, 12, 1);
-new app.Person(13, 14, 2);
+new app.Person(12, 14, 2);
 new app.Tree(13, 23, 1, false);
 new app.Stone(13, 5, 0);
 new app.Food(16, 15, 1);
-new app.Person(21, 11, 3);
+new app.Person(21, 10, 3);
 new app.Stone(23, 23, 1);
 new app.Food(23, 5, 0);
 new app.Food(23, 20, 1);
@@ -250,6 +489,63 @@ new app.Food(53, 14, 1);
 new app.Tree(57, 21, 1, false);
 new app.Tree(55, 13, 1, false);
 
+new app.Stone(36, 8, 0);
+new app.Stone(34, 9, 1);
+new app.Stone(37, 11, 2);
+
+
+new app.Tree(15, 26, 0, false);
+new app.Tree(16, 29, 1, false);
+new app.Tree(18, 24, 0, false);
+new app.Tree(15, 25, 0, false);
+new app.Tree(19, 26, 1, false);
+new app.Tree(15, 23, 0, false);
+new app.Tree(17, 25, 1, false);
+
+
+new app.Tree(18, 26, 0, false);
+new app.Tree(19, 29, 1, false);
+new app.Tree(21, 24, 0, false);
+new app.Tree(24, 25, 0, false);
+new app.Tree(26, 26, 1, false);
+new app.Tree(25, 23, 0, false);
+new app.Tree(27, 25, 1, false);
+
+new app.Tree(41, 29, 0, false);
+new app.Tree(34, 27, 0, false);
+new app.Tree(36, 28, 0, false);
+new app.Tree(37, 15, 0, false);
+new app.Tree(48, 17, 0, false);
+new app.Tree(39, 14, 0, false);
+new app.Tree(30, 12, 0, false);
+new app.Tree(32, 27, 0, false);
+new app.Tree(35, 21, 0, false);
+new app.Tree(37, 28, 0, false);
+new app.Tree(34, 28, 0, false);
+new app.Tree(37, 14, 0, false);
+new app.Tree(34, 17, 0, false);
+new app.Tree(36, 9, 0, false);
+new app.Tree(47, 28, 0, false);
+
+
+new app.Food(58, 3, 0);
+new app.Tree(51, 2, 0);
+new app.Tree(56, 11, 1);
+
+new app.Stone(57, 4, 0);
+new app.Stone(55, 3, 1);
+new app.Stone(55, 4, 2);
+
+new app.Stone(33, 18, 0);
+new app.Stone(35, 18, 1);
+new app.Stone(31, 19, 2);
+
+new app.Stone(38, 28, 0);
+
+new app.Stone(58, 28, 0);
+new app.Stone(58, 26, 1);
+new app.Stone(56, 24, 0);
+new app.Stone(52, 26, 2);
 
 app.PLAYER_IMAGES = [];
 
@@ -341,32 +637,32 @@ app.keydown = [];
 
 
 // the Modernizr object is from the modernizr.custom.js file
-window.onblur = function(){
+window.onblur = function () {
 	app.paused = true;
 	cancelAnimationFrame(app.animationID);
 	app.keydown = []; // clear key daemon
-	
+
 	// createjs.Sound.stop();
 	// call update() so that our paused screen gets drawn
 	app.topDown.update();
 };
 
-window.onfocus = function(){
+window.onfocus = function () {
 	app.paused = false;
 	cancelAnimationFrame(app.animationID);
-	
+
 	app.topDown.startSoundtrack();
 	// start the animation back up
 	app.topDown.update();
 };
 
 // event listeners
-window.addEventListener("keydown",function(e){
+window.addEventListener("keydown", function (e) {
 	//console.log("keydown=" + e.keyCode);
 	app.keydown[e.keyCode] = true;
 });
-	
-window.addEventListener("keyup",function(e){
+
+window.addEventListener("keyup", function (e) {
 	//console.log("keyup=" + e.keyCode);
 	app.keydown[e.keyCode] = false;
 });
