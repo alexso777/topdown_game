@@ -41,7 +41,7 @@ app.draw = {
 		  if (lineWidth > maxWidth && i > 0) {
 			ctx.fillText(line, x, y);
 			line = words[i] + ' ';
-			y += 12; // adjust the line height as needed
+			y += Math.floor(fontSize * 1.8); // adjust the line height as needed
 		  } else {
 			line = testLine;
 		  }

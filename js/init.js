@@ -18,7 +18,9 @@ app.KEYBOARD = {
 	"KEY_DOWN": 40,
 	"KEY_SPACE": 32,
 	"KEY_ENTER": 13,
-	"KEY_BUILD": 66
+	"KEY_BUILD": 66,
+	"KEY_YES": 89,
+	"KEY_NO": 78,
 };
 
 app.t_s = 8;
@@ -30,6 +32,17 @@ app.wood = 0;
 app.stone = 0;
 app.social = 0;
 
+app.questions = ["Is the Earth larger than the Moon?",
+	"Does a triangle have three sides?",
+	"Can dogs fly without assistance?",
+	"Is water a liquid at room temperature?",
+	"Are oranges a type of fruit?",
+	"Do humans have gills for breathing underwater?",
+	"Is the capital of France London?",
+	"Can you divide any number by zero?",
+	"Is the sun a star?",
+	"Is chocolate made from cocoa beans?"];
+app.answers = [true, true, false, true, true, false, false, false, true, true];
 app.TERRAIN_IMAGES = {}
 
 let tileImage_0 = new Image();

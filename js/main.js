@@ -143,13 +143,21 @@ app.topDown = {
 	},
 
 	drawChat: function() {
-		if(app.keydown[app.KEYBOARD.KEY_ENTER])
+		if(app.keydown[app.KEYBOARD.KEY_YES])
 		{
-			app.social+=1;
-			this.player.chatStatus = false;
+			if(app.answers[this.player.chatStatus-1])
+				app.social+=1;
+			this.player.chatStatus = 0;
+		} else if(app.keydown[app.KEYBOARD.KEY_NO])
+		{
+			if(!app.answers[this.player.chatStatus-1])
+				app.social+=1;
+			this.player.chatStatus = 0;
 		} else {
-			app.draw.rect(this.ctx, 10, 40, 100, 30, "brown");
-			app.draw.text(this.textCTX, "Hello! Nice to meet you here. Press Enter to exit!", 15*this.ZOOM_RATE, 75*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 120**this.ZOOM_RATE);
+			app.draw.rect(this.ctx, 10, 20, 140, 50, "brown");
+			app.draw.text(this.textCTX, app.questions[this.player.chatStatus-1], 15*this.ZOOM_RATE, 35*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 130*this.ZOOM_RATE);
+			app.draw.text(this.textCTX, "Yes", 50*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+			app.draw.text(this.textCTX, "No", 90*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 		}
 	},
 

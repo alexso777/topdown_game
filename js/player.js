@@ -13,7 +13,7 @@ app.player = {
 	speed: 80,
 	health: 100,
 	image: undefined,
-	chatStatus: false,
+	chatStatus: 0,
 	workFrame: 0,
 
 	MAXSPEED: 80,
