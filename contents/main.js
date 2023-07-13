@@ -233,9 +233,12 @@ app.topDown = {
 		let x = Math.floor(this.player.position.x/app.t_s);
 		let y = Math.floor(this.player.position.y/app.t_s);
 		this.textCTX.globalAlpha = 0.7;
-		if(app.HouseData.checkSpace(x, y, this.player.direction)){
+		if(app.topDown.buildingStatus){
+			app.draw.text(this.textCTX, "Enter : Confirm", 2*this.ZOOM_RATE, (this.HEIGHT - 20)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+			app.draw.text(this.textCTX, "Esc : Cancel", 2*this.ZOOM_RATE, (this.HEIGHT - 10)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+		} else if(app.HouseData.checkSpace(x, y, this.player.direction)){
 			if((app.wood >= 20 && app.stone >= 30) ||  (app.social >= 2)){
-				app.draw.text(this.textCTX, "B : Build", 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "yellow");
+				app.draw.text(this.textCTX, "B : Build", 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
 			}
 		} else {
 			if(this.player.direction == 0){
@@ -263,9 +266,17 @@ app.topDown = {
 				} else if(app.objects[y][x].o.type == app.PersonData.type) {
 					txt += "Talk";
 				} else if(app.objects[y][x].o.type == app.HouseData.type) {
-					txt += "Play";
+					if(app.objects[y][x].o.style == 0){
+						if(app.objects[y][x].o.health<app.HouseData.health){
+							txt += "Work";
+						} else {
+							txt = "";
+						}
+					} else {
+						txt += "Play";
+					}
 				}
-				app.draw.text(this.textCTX, txt, 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "yellow");
+				app.draw.text(this.textCTX, txt, 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
 			}
 		}
 		this.textCTX.globalAlpha = 1;
