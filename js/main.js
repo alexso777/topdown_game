@@ -24,6 +24,8 @@ app.topDown = {
 	// Enemies to be seen
 	DEBUG: false,
 	currentGameState: 1,
+	chatStatus: 0,
+	buildingStatus: undefined,
 	// Keep the score of enemies killed
 	score: 0,
 	mouseData: { x: 0, y: 0 },
@@ -79,7 +81,7 @@ app.topDown = {
 			// Game Screen
 			else if (this.currentGameState == this.GAME_STATE_GAME) {
 				this.player.update(this.dt);
-				if (!this.player.chatStatus) {
+				if (!this.chatStatus && this.buildingStatus == undefined) {
 					this.moveSprites();
 					this.player.doAction();
 				}
@@ -121,8 +123,12 @@ app.topDown = {
 				this.drawSprites();
 				this.ctx.globalAlpha = 1.0;
 
-				if (this.player.chatStatus) {
+				if (this.chatStatus) {
 					this.drawChat();
+				}
+
+				if (this.buildingStatus) {
+					this.drawBuilding();
 				}
 
 				if (this.player.health == 0) {
@@ -142,20 +148,81 @@ app.topDown = {
 		app.animationID = requestAnimationFrame(this.update.bind(this));
 	},
 
+	drawBuilding: function() {
+		let x = app.topDown.buildingStatus.x,y = app.topDown.buildingStatus.y;
+		if(app.keydown[app.KEYBOARD.KEY_ENTER])
+		{
+			if(app.wood >= 20 && app.stone >= 30){
+				new app.House(x, y, 0, app.topDown.buildingStatus.direction, 1);
+				app.wood -= 20;
+				app.stone -= 20;
+			} else if (app.social >= 2){
+				new app.House(x, y, 0, app.topDown.buildingStatus.direction, 1);
+				app.social -= 2;
+			}
+			app.player.workFrame = 0;
+			app.topDown.buildingStatus = undefined;
+		} else if(app.keydown[app.KEYBOARD.KEY_ESC]){ 
+			app.player.workFrame = 0;
+			app.topDown.buildingStatus = undefined;
+		} else if(app.keydown[app.KEYBOARD.KEY_UP]){ 
+			y = y-1;
+			if(app.player.workFrame ==0 && app.HouseData.checkSpace(x,y,app.topDown.buildingStatus.direction)){
+				app.topDown.buildingStatus = {x:x, y:y, direction:app.topDown.buildingStatus.direction};
+				app.player.workFrame = 1;
+			}
+		} else if(app.keydown[app.KEYBOARD.KEY_RIGHT]){ 
+			x = x+1;
+			if(app.player.workFrame ==0 && app.HouseData.checkSpace(x,y,app.topDown.buildingStatus.direction)){
+				app.topDown.buildingStatus = {x:x, y:y, direction:app.topDown.buildingStatus.direction};
+				app.player.workFrame = 1;
+			}
+		} else if(app.keydown[app.KEYBOARD.KEY_DOWN]){ 
+			y = y+1;
+			if(app.player.workFrame ==0 && app.HouseData.checkSpace(x,y,app.topDown.buildingStatus.direction)){
+				app.topDown.buildingStatus = {x:x, y:y, direction:app.topDown.buildingStatus.direction};
+				app.player.workFrame = 1;
+			}
+		} else if(app.keydown[app.KEYBOARD.KEY_LEFT]){ 
+			x = x-1;
+			if(app.player.workFrame ==0 && app.HouseData.checkSpace(x,y,app.topDown.buildingStatus.direction)){
+				app.topDown.buildingStatus = {x:x, y:y, direction:app.topDown.buildingStatus.direction};
+				app.player.workFrame = 1;
+			}
+		} else {
+			if(app.topDown.buildingStatus.direction == 0)
+				y = y-1;
+			else if(app.topDown.buildingStatus.direction == 1)
+				x = x+1;
+			else if(app.topDown.buildingStatus.direction == 2)
+				y = y+1;
+			else if(app.topDown.buildingStatus.direction == 3)
+				x = x-2;
+			this.ctx.save();
+			this.ctx.globalAlpha = 0.7;
+			app.draw.rect(this.ctx, (x-this.O_W)*app.t_s-this.E_W, (y-this.O_H)*app.t_s-this.E_H, app.t_s*2, app.t_s, "brown");
+			this.ctx.globalAlpha = 1;
+			this.ctx.save();
+		}
+		if(app.player.workFrame>0){
+			app.player.workFrame = (app.player.workFrame+1)%20;
+		}
+	},
+
 	drawChat: function() {
 		if(app.keydown[app.KEYBOARD.KEY_YES])
 		{
-			if(app.answers[this.player.chatStatus-1])
+			if(app.answers[this.chatStatus-1])
 				app.social+=1;
-			this.player.chatStatus = 0;
+			this.chatStatus = 0;
 		} else if(app.keydown[app.KEYBOARD.KEY_NO])
 		{
-			if(!app.answers[this.player.chatStatus-1])
+			if(!app.answers[this.chatStatus-1])
 				app.social+=1;
-			this.player.chatStatus = 0;
+			this.chatStatus = 0;
 		} else {
 			app.draw.rect(this.ctx, 10, 20, 140, 50, "brown");
-			app.draw.text(this.textCTX, app.questions[this.player.chatStatus-1], 15*this.ZOOM_RATE, 35*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 130*this.ZOOM_RATE);
+			app.draw.text(this.textCTX, app.questions[this.chatStatus-1], 15*this.ZOOM_RATE, 35*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 130*this.ZOOM_RATE);
 			app.draw.text(this.textCTX, "Yes", 50*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 			app.draw.text(this.textCTX, "No", 90*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 		}
@@ -339,13 +406,13 @@ app.topDown = {
 	// Also keeps the player on screen
 	movePlayer: function () {
 		if (app.keydown[app.KEYBOARD.KEY_LEFT]) {
-			this.player.moveLeft(this.dt);
+			this.player.moveLeft();
 		} else if (app.keydown[app.KEYBOARD.KEY_RIGHT]) {
-			this.player.moveRight(this.dt);
+			this.player.moveRight();
 		} else if (app.keydown[app.KEYBOARD.KEY_UP]) {
-			this.player.moveUp(this.dt);
+			this.player.moveUp();
 		} else if (app.keydown[app.KEYBOARD.KEY_DOWN]) {
-			this.player.moveDown(this.dt);
+			this.player.moveDown();
 		}
 
 		this.player.keepOnScreen();

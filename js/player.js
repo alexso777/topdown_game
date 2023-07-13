@@ -13,7 +13,6 @@ app.player = {
 	speed: 80,
 	health: 100,
 	image: undefined,
-	chatStatus: 0,
 	workFrame: 0,
 
 	MAXSPEED: 80,
@@ -28,7 +27,6 @@ app.player = {
 	
 	// Updates the players position and other vectors
 	update: function(dt){
-
 		this.velocity = this.velocity.add(this.acceleration);
 		this.velocity = this.velocity.clamp(this.MAXSPEED);
 		var vel = this.velocity.scalarMult(dt);
@@ -51,19 +49,19 @@ app.player = {
 
 		ctx.save();
 		
-		if(this.workFrame ==0 && (this.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN])))
+		if(this.workFrame ==0 && (app.topDown.buildingStatus || app.topDown.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN])))
 			this.frame = 0;
 		// Translate and rotate the character
 		ctx.drawImage(app.PLAYER_IMAGES[this.direction][Math.floor(this.frame/4)], (posX - O_W)*app.t_s + eX - halfW, (posY - O_H)*app.t_s + eY -halfH, this.width, this.height)
-		if(!this.chatStatus && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
+		if(!app.topDown.chatStatus && app.topDown.buildingStatus == undefined && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = (this.frame+1)%16;
-		else if(!this.chatStatus && this.workFrame>0)
+		else if(!app.topDown.chatStatus && app.topDown.buildingStatus == undefined && this.workFrame>0)
 			this.frame = (this.frame+1)%8;
 		ctx.restore();
 	},
 	
 	// Moves the player to the left
-	moveLeft: function(dt){
+	moveLeft: function(){
 		let posX = Math.floor(this.position.x/app.t_s);
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor((this.position.x-app.t_s/2)/app.t_s);
@@ -74,7 +72,7 @@ app.player = {
 	},
 	
 	// Moves the player to the right
-	moveRight: function(dt){
+	moveRight: function(){
 		let posX = Math.floor(this.position.x/app.t_s);
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor((this.position.x+app.t_s/2)/app.t_s);
@@ -85,7 +83,7 @@ app.player = {
 	},
 	
 	// Moves the player up
-	moveUp: function(dt){
+	moveUp: function(){
 		let posX = Math.floor(this.position.x/app.t_s);
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor(this.position.x/app.t_s);
@@ -96,7 +94,7 @@ app.player = {
 	},
 	
 	// Moves the player to the right
-	moveDown: function(dt){
+	moveDown: function(){
 		let posX = Math.floor(this.position.x/app.t_s);
 		let posY = Math.floor(this.position.y/app.t_s);
 		let x = Math.floor(this.position.x/app.t_s);
@@ -115,13 +113,8 @@ app.player = {
 				let x = Math.floor(this.position.x/app.t_s);
 				let y = Math.floor(this.position.y/app.t_s);
 				if(app.HouseData.checkSpace(x, y, this.direction)){
-					if(app.wood >= 20 && app.stone >= 30){
-						new app.House(x, y, 0, this.direction);
-						app.wood -= 20;
-						app.stone -= 20;
-					} else if (app.social >= 2){
-						new app.House(x, y, 0, this.direction);
-						app.social -= 2;
+					if(app.wood >= 20 && app.stone >= 30 || app.social >= 2){
+						app.topDown.buildingStatus = {x:x, y:y, direction: this.direction};
 					}
 				}
 			}

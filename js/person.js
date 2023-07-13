@@ -47,7 +47,7 @@ app.Person = function(){
 	};
 
 	p.doAction = function() {
-		app.player.chatStatus = Math.floor(Math.random() * 10) + 1;
+		app.topDown.chatStatus = Math.floor(Math.random() * 10) + 1;
 	}
 	
 	return Person; 

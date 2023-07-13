@@ -15,6 +15,7 @@ houseImage_2.src = "data:image/gif;base64,R0lGODlhEAAQALMAAAAAAP///0IpMRkQISkpQj
 
 app.HouseData = {
 	type: "House",
+	health: 8,
 	houseImages: [houseImage, houseImage_1,houseImage_2],
 	checkSpace(posX, posY, direction) {
 		if(direction==0){
@@ -32,6 +33,8 @@ app.HouseData = {
 		}
 
 		if(app.isOutside(posX, posY)) return false;
+		if(app.wholeObstacle.includes(app.terrains[posY*app.w_w+posX])) return false;
+
 		for(let i=0; i<2; i++){
 			if(app.objects[posY][posX+i] != null)
 				return false;
@@ -43,11 +46,12 @@ app.HouseData = {
 app.House = function(){
 	
 	// Set up the house
-	function House(posX, posY, style, direction){
+	function House(posX, posY, style, direction, health){
 		this.type = app.HouseData.type;
 		this.style = style;
 		this.width = 2;
 		this.height = 1;
+		this.health = health;
 		if(direction==0){
 			this.posX = posX;
 			this.posY = posY-1;
@@ -72,12 +76,22 @@ app.House = function(){
 	// Draw the house
 	p.draw = function(ctx, O_W, O_H, E_W, E_H) {
 		let image = app.HouseData.houseImages[this.style];
+		ctx.save();
+		if(this.health!= app.HouseData.health && this.health>0){
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "white");
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width*this.health/app.HouseData.health, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "red");
+			ctx.globalAlpha = 0.7;
+		}
 		ctx.drawImage(image, (this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H + app.t_s - image.height, image.width, image.height);
+		ctx.globalAlpha = 1.0;
+		ctx.restore();
 	};
 
 	p.doAction = function() {
 		app.player.workFrame = 1;
-		if(this.style == 1){
+		if(this.style == 0 && this.health<app.HouseData.health){
+			this.health++;
+		} else if(this.style == 1){
 			window.open("https://tetris.com/play-tetris", "_blank");
 		} else if (this.style == 2){
 			window.open("https://supermario-game.com/", "_blank");

@@ -18,6 +18,7 @@ app.KEYBOARD = {
 	"KEY_DOWN": 40,
 	"KEY_SPACE": 32,
 	"KEY_ENTER": 13,
+	"KEY_ESC": 27,
 	"KEY_BUILD": 66,
 	"KEY_YES": 89,
 	"KEY_NO": 78,
@@ -204,7 +205,7 @@ new app.Tree(3, 3, 0, false);
 new app.Food(3, 7, 0);
 new app.Tree(6, 8, 0, false);
 new app.Tree(10, 25, 0, false);
-new app.House(12, 10, 1, 0);
+new app.House(12, 10, 1, 0, 8);
 new app.Food(12, 12, 1);
 new app.Person(13, 14, 2);
 new app.Tree(13, 23, 1, false);
@@ -217,7 +218,7 @@ new app.Food(23, 20, 1);
 new app.Person(33, 8, 1);
 new app.Food(33, 7, 1);
 new app.Tree(33, 29, 1, false);
-new app.House(33, 14, 2, 1);
+new app.House(33, 14, 2, 1, 8);
 new app.Stone(43, 7, 1);
 new app.Tree(43, 16, 0, false);
 new app.Tree(43, 20, 0, false);
