@@ -118,7 +118,7 @@ app.player = {
 					if(app.wood >= 20 && app.stone >= 30){
 						new app.House(x, y, 0, this.direction);
 						app.wood -= 20;
-						app.stone -= 30;
+						app.stone -= 20;
 					} else if (app.social >= 2){
 						new app.House(x, y, 0, this.direction);
 						app.social -= 2;
@@ -147,19 +147,6 @@ app.player = {
 			}
 		} else {
 			this.workFrame = (this.workFrame + 1) % 20;
-		}
-	},
-
-	chat: function(ctx) {
-		if(app.keydown[app.KEYBOARD.KEY_ENTER])
-		{
-			app.social+=1;
-			this.chatStatus = false;
-		} else {
-			ctx.save();
-			app.draw.rect(ctx, 10, 40, 100, 30, "brown");
-			app.draw.text(ctx, "Hello! Nice to meet you here. Press Enter to exit!", 15, 75, 8, "white", 100);
-			ctx.restore();
 		}
 	},
 

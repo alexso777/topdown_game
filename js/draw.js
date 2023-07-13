@@ -26,11 +26,13 @@ app.draw = {
 	
 	// Writes text
 	text : function(ctx, text, x, y, fontSize, color, maxWidth=1000) {
-		ctx.font = ''+fontSize+'px "Press Start 2P"';
+		ctx.font = ''+fontSize +'px "FFF Forward"';
 		ctx.fillStyle = color;
+		ctx.shadowColor = 'transparent';
+		ctx.shadowBlur = 0;
+		ctx.imageSmoothingEnabled = false;
 		const words = text.split(' ');
 		let line = '';
-	  
 		for (let i = 0; i < words.length; i++) {
 		  const testLine = line + words[i] + ' ';
 		  const metrics = ctx.measureText(testLine);
@@ -39,7 +41,7 @@ app.draw = {
 		  if (lineWidth > maxWidth && i > 0) {
 			ctx.fillText(line, x, y);
 			line = words[i] + ' ';
-			y += 20; // adjust the line height as needed
+			y += 12; // adjust the line height as needed
 		  } else {
 			line = testLine;
 		  }

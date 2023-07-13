@@ -44,7 +44,7 @@ app.Stone = function(){
 
 	p.doAction = function() {
 		app.player.workFrame = 1;
-		app.stone += 10;
+		app.stone += 5;
 		app.objects[this.posY][this.posX] = null;
 		delete this;
 	}

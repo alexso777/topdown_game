@@ -52,7 +52,7 @@ app.Tree = function(){
 
 	p.doAction = function() {
 		app.player.workFrame = 1;
-		app.wood += 10;
+		app.wood += 5;
 		if(!this.isRoot){
 			this.isRoot = true;
 			app.objects[this.posY][this.posX+1] = null;

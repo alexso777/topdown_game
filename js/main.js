@@ -5,7 +5,7 @@ var app = app || {};
 app.topDown = {
 	WIDTH: 160,
 	HEIGHT: 96,
-	BAR_HEIGHT: 20,
+	BAR_HEIGHT: 12,
 	W_W: 20,
 	W_H: 12,
 	O_W: 0,
@@ -14,9 +14,7 @@ app.topDown = {
 	E_H: 0,
 	S_W: 0,
 	S_H: 0,
-	BEG_FIRE_RATE: 3,
-
-	ENEMY_WAVE_INC: 2,
+	ZOOM_RATE: 6,
 	// Used to change from menu to game and other windows
 	GAME_STATE_MENU: 1,
 	GAME_STATE_GAME: 2,
@@ -35,37 +33,31 @@ app.topDown = {
 	currentWave: 1,
 
 	player: undefined,
-	playerTrees: [],
-	fire_rate: 3,
-	cooldown: 0,
-
-	// Background
-	backgroundImage: undefined,
-	// Emitters
-	emitters: [],
 
 	canvas: undefined,
+	textPanel: undefined,
 	ctx: undefined,
+	textCTX: undefined,
 	dt: 1 / 60.0,
 
 	// Sets up the game
 	init: function () {
 		// Set up the canvas
-		this.canvas = document.querySelector('canvas');
+		this.canvas = document.querySelector('#image');
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT + this.BAR_HEIGHT;
 
-		this.canvas.onmousedown = this.doMousedown.bind(this);
-		this.canvas.onmousemove = this.doMouseMove.bind(this);
 		this.ctx = this.canvas.getContext('2d');
+
+		this.textPanel = document.querySelector('#text');
+		this.textPanel.onmousedown = this.doMousedown.bind(this);
+		this.textPanel.onmousemove = this.doMouseMove.bind(this);
+		this.textCTX = this.textPanel.getContext('2d');
 
 		// Get the player
 		this.player = app.player;
 		this.player.init();
 
-		var image = new Image();
-		image.src = app.TERRAIN_IMAGES['background'];
-		this.backgroundImage = image;
 		this.update();
 	},
 
@@ -73,15 +65,16 @@ app.topDown = {
 	// Handles game logic
 	update: function () {
 		app.draw.clear(this.ctx, 0, 0, this.WIDTH, this.HEIGHT + this.BAR_HEIGHT);
+		app.draw.clear(this.textCTX, 0, 0, this.WIDTH*this.ZOOM_RATE, this.HEIGHT*this.ZOOM_RATE + this.BAR_HEIGHT*this.ZOOM_RATE);
 
 		// Pausing the game
 		if (app.paused) {
-			this.drawPauseScreen(this.ctx);
+			this.drawPauseScreen();
 		} else {
 			// Update the game
 			// Main menu screen
 			if (this.currentGameState == this.GAME_STATE_MENU) {
-				this.drawMainScreen(this.ctx);
+				this.drawMainScreen();
 			}
 			// Game Screen
 			else if (this.currentGameState == this.GAME_STATE_GAME) {
@@ -121,17 +114,15 @@ app.topDown = {
 				}
 
 				// Check collisions
-				this.drawBackground(this.ctx);
+				this.drawBackground();
 
 				// Draw sprites
 				this.ctx.globalAlpha = 0.9;
 				this.drawSprites();
-				// Draw HUD
-				// this.drawHUD();
 				this.ctx.globalAlpha = 1.0;
 
 				if (this.player.chatStatus) {
-					this.player.chat(this.ctx);
+					this.drawChat();
 				}
 
 				if (this.player.health == 0) {
@@ -143,117 +134,99 @@ app.topDown = {
 			}
 			// Game Over Screen
 			else if (this.currentGameState == this.GAME_STATE_DEAD) {
-				this.drawGameOverScreen(this.ctx);
+				this.drawGameOverScreen();
 			}
 		}
-		this.drawBar(this.ctx);
+		this.drawBar();
 		// Loop the game
 		app.animationID = requestAnimationFrame(this.update.bind(this));
 	},
 
-	drawBar: function (ctx) {
-		app.draw.rect(ctx, 0, this.HEIGHT, this.WIDTH, this.BAR_HEIGHT, "brown");
+	drawChat: function() {
+		if(app.keydown[app.KEYBOARD.KEY_ENTER])
+		{
+			app.social+=1;
+			this.player.chatStatus = false;
+		} else {
+			app.draw.rect(this.ctx, 10, 40, 100, 30, "brown");
+			app.draw.text(this.textCTX, "Hello! Nice to meet you here. Press Enter to exit!", 15*this.ZOOM_RATE, 75*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 120**this.ZOOM_RATE);
+		}
+	},
 
-		let treeImage = app.TreeData.treeImages[0];
-		ctx.drawImage(treeImage, 10, this.HEIGHT + 2, treeImage.width, treeImage.height);
-		app.draw.text(ctx, app.wood.toString(), 30, this.HEIGHT + this.BAR_HEIGHT / 2 + 4, 8, "white");
+	drawBar: function () {
+		app.draw.rect(this.ctx, 0, this.HEIGHT, this.WIDTH, this.BAR_HEIGHT, "brown");
 
-		let stoneImage = app.StoneData.stoneImages[1];
-		ctx.drawImage(stoneImage, 50, this.HEIGHT + 2, stoneImage.width, stoneImage.height);
-		app.draw.text(ctx, app.stone.toString(), 70, this.HEIGHT + this.BAR_HEIGHT / 2 + 4, 8, "white");
+		let treeImage = app.TreeData.rootImages[0];
+		this.ctx.drawImage(treeImage, 2, this.HEIGHT + 2, treeImage.width, treeImage.height);
+		app.draw.text(this.textCTX, app.wood.toString(), 12*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+
+		let stoneImage = app.StoneData.stoneImages[0];
+		this.ctx.drawImage(stoneImage, 32, this.HEIGHT + 2, stoneImage.width, stoneImage.height);
+		app.draw.text(this.textCTX, app.stone.toString(), 42*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 
 		let foodImage = app.FoodData.foodImages[1];
-		ctx.drawImage(foodImage, 90, this.HEIGHT + 6, foodImage.width, foodImage.height);
-		app.draw.text(ctx, app.food.toString(), 100, this.HEIGHT + this.BAR_HEIGHT / 2 + 4, 8, "white");
+		this.ctx.drawImage(foodImage, 64, this.HEIGHT + 2, foodImage.width, foodImage.height);
+		app.draw.text(this.textCTX, app.food.toString(), 74*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 
 		let personImage = app.PersonData.personImages[0];
-		ctx.drawImage(personImage, 130, this.HEIGHT + 6, personImage.width, personImage.height);
-		app.draw.text(ctx, app.social.toString(), 140, this.HEIGHT + this.BAR_HEIGHT / 2 + 4, 8, "white");
+		this.ctx.drawImage(personImage, 96, this.HEIGHT + 2, personImage.width, personImage.height);
+		app.draw.text(this.textCTX, app.social.toString(), 106*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
 	},
 
 	// Lets the player know the game is paused
-	drawPauseScreen: function (ctx) {
-		ctx.save();
-		if (!this.backgroundImage) {
-			app.draw.backgroundGradient(this.ctx, this.WIDTH, this.HEIGHT);
-		}
-		else {
-			this.drawBackground(this.ctx, this.backgroundImage);
-		}
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		app.draw.text(this.ctx, "... PAUSED ...", this.WIDTH / 2, this.HEIGHT / 2, 20, "white");
-		ctx.restore();
+	drawPauseScreen: function () {
+		this.drawBackground();
+		this.textCTX.save();
+		this.textCTX.textAlign = "center";
+		this.textCTX.textBaseline = "middle";
+		app.draw.text(this.textCTX, "... PAUSED ...", this.WIDTH / 2*this.ZOOM_RATE, this.HEIGHT / 2*this.ZOOM_RATE, 12*this.ZOOM_RATE, "white");
+		this.textCTX.restore();
 	},
 
 	// Says the title of the game
 	// Tells the player how to get into the game
 	// Tells the player who made the game
 	// Gives instructions on how to play
-	drawMainScreen: function (ctx) {
-		ctx.save();
-		if (!this.backgroundImage) {
-			app.draw.backgroundGradient(this.ctx, this.WIDTH, this.HEIGHT);
-		}
-		else {
-			this.drawBackground(this.ctx, this.backgroundImage);
-		}
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		app.draw.text(this.ctx, "TopDown", this.WIDTH / 2, this.HEIGHT / 2 - 70, 20, "white");
-		app.draw.text(this.ctx, "Click to play", this.WIDTH / 2, this.HEIGHT / 2 - 35, 10, "white");
-		app.draw.text(this.ctx, "Made by TechGuy", this.WIDTH / 2, this.HEIGHT / 2 - 20, 10, "white");
-		app.draw.text(this.ctx, "Controls", this.WIDTH / 2, this.HEIGHT / 2 + 20, 12, "white");
-		app.draw.text(this.ctx, "A - Move Left", this.WIDTH / 2 - 80, this.HEIGHT / 2 + 40, 8, "white");
-		app.draw.text(this.ctx, "D - Move Right", this.WIDTH / 2 + 80, this.HEIGHT / 2 + 40, 8, "white");
-		app.draw.text(this.ctx, "W - Move Up", this.WIDTH / 2 - 80, this.HEIGHT / 2 + 55, 8, "white");
-		app.draw.text(this.ctx, "S - Move Down", this.WIDTH / 2 + 80, this.HEIGHT / 2 + 55, 8, "white");
-		app.draw.text(this.ctx, "Space - Work", this.WIDTH / 2 - 80, this.HEIGHT / 2 + 70, 8, "white");
-		app.draw.text(this.ctx, "C - Build house", this.WIDTH / 2 + 80, this.HEIGHT / 2 + 70, 8, "white");
-		ctx.restore();
-	},
-
-
-
-	// Gives a player the indication of health and their score
-	drawHUD: function () {
-		// Draw player health to the screen
-		app.draw.text(this.ctx, "Health: " + this.player.health, 20, 40, 16, "#ddd");
-
-		// Draw score to the screen
-		app.draw.text(this.ctx, "Money: " + this.score, this.WIDTH - 120, 40, 16, "#ddd");
-
+	drawMainScreen: function () {
+		this.drawBackground();
+		this.textCTX.save();
+		this.textCTX.textAlign = "center";
+		this.textCTX.textBaseline = "middle";
+		app.draw.text(this.textCTX, "TopDown", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 30)*this.ZOOM_RATE, 8*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Click to play", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 10)*this.ZOOM_RATE, 5*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Made by TechGuy", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 0)*this.ZOOM_RATE, 5*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Controls", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 15)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "A - Move Left", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 25)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "D - Move Right", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 25)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "W - Move Up", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 32)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "S - Move Down", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 32)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Space - Work", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 39)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "C - Build house", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 39)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		this.textCTX.restore();
 	},
 
 	// Tells the player their score and that the game is over
 	// Also gives instructions to get back to the main menu
-	drawGameOverScreen: function (ctx) {
-		ctx.save();
-		if (!this.backgroundImage) {
-			app.draw.backgroundGradient(this.ctx, this.WIDTH, this.HEIGHT);
-		}
-		else {
-			this.drawBackground(this.ctx, this.backgroundImage);
-		}
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		app.draw.text(this.ctx, "Game Over", this.WIDTH / 2, this.HEIGHT / 2 - 100, 40, "white");
-		app.draw.text(this.ctx, "You got to wave " + app.topDown.currentWave, this.WIDTH / 2, this.HEIGHT / 2 - 50, 40, "white");
-		app.draw.text(this.ctx, "Click to go to Main Menu", this.WIDTH / 2, this.HEIGHT / 2, 20, "white");
-		ctx.restore();
+	drawGameOverScreen: function () {
+		this.drawBackground();
+		this.textCTX.save();
+		this.textCTX.textAlign = "center";
+		this.textCTX.textBaseline = "middle";
+		app.draw.text(this.textCTX, "Game Over", (this.WIDTH / 2)*this.ZOOM_RATE, (this.HEIGHT / 2)*this.ZOOM_RATE, 12*this.ZOOM_RATE, "white");
+		this.textCTX.restore();
 	},
 
 	// Draws the background image
-	drawBackground: function (ctx) {
+	drawBackground: function () {
 		for (let i = this.O_H; i < (this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++) {
 			for (let j = this.O_W; j < (this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++) {
-				ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i * app.w_w + j)], (j - this.O_W) * app.t_s - this.E_W, (i - this.O_H) * app.t_s - this.E_H, app.t_s, app.t_s);
+				this.ctx.drawImage(app.TERRAIN_IMAGES[app.terrains.charAt(i * app.w_w + j)], (j - this.O_W) * app.t_s - this.E_W, (i - this.O_H) * app.t_s - this.E_H, app.t_s, app.t_s);
 			}
 		}
 		for (let i = this.O_H; i < (this.O_H + this.W_H + (this.S_H == 1 ? 1 : 0)); i++) {
 			for (let j = this.O_W; j < (this.O_W + this.W_W + (this.S_W == 1 ? 1 : 0)); j++) {
 				if (app.covers.charAt(i * app.w_w + j) != "0") {
-					ctx.drawImage(app.COVER_IMAGES[app.covers.charAt(i * app.w_w + j)], (j - this.O_W) * app.t_s - this.E_W, (i - this.O_H) * app.t_s - this.E_H, app.t_s, app.t_s);
+					this.ctx.drawImage(app.COVER_IMAGES[app.covers.charAt(i * app.w_w + j)], (j - this.O_W) * app.t_s - this.E_W, (i - this.O_H) * app.t_s - this.E_H, app.t_s, app.t_s);
 				}
 			}
 		}
@@ -276,26 +249,6 @@ app.topDown = {
 				}
 			}
 		}
-
-		// // Draw enemies
-		// for(var i = 0; i < this.enemies.length; i++)
-		// {
-		// 	this.enemies[i].draw(this.ctx);
-		// }
-
-		// // Draw emitters
-		// for(var i = 0; i < this.emitters.length; i++)
-		// {
-		// 	this.emitters[i].updateAndDraw(this.ctx);
-		// }
-
-		// // Draw trees
-		// for(var i = 0; i < this.playerTrees.length; i++)
-		// {
-		// 	this.playerTrees[i].draw(this.ctx);
-		// }
-
-		// Draw the player
 	},
 
 	// Takes care of movement and updating
