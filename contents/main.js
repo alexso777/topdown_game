@@ -229,59 +229,60 @@ app.topDown = {
 	},
 
 	drawBar: function () {
-		this.textCTX.save();
 		let x = Math.floor(this.player.position.x/app.t_s);
 		let y = Math.floor(this.player.position.y/app.t_s);
-		this.textCTX.globalAlpha = 0.7;
-		if(app.topDown.buildingStatus){
-			app.draw.text(this.textCTX, "Enter : Confirm", 2*this.ZOOM_RATE, (this.HEIGHT - 20)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
-			app.draw.text(this.textCTX, "Esc : Cancel", 2*this.ZOOM_RATE, (this.HEIGHT - 10)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
-		} else if(app.HouseData.checkSpace(x, y, this.player.direction)){
-			if((app.wood >= 20 && app.stone >= 30) ||  (app.social >= 2)){
-				app.draw.text(this.textCTX, "B : Build", 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
-			}
-		} else {
-			if(this.player.direction == 0){
-				x = Math.floor(this.player.position.x/app.t_s);
-				y = Math.floor((this.player.position.y-app.t_s/2)/app.t_s);
-			} else if(this.player.direction == 1){
-				x = Math.floor((this.player.position.x+app.t_s/2)/app.t_s);
-				y = Math.floor(this.player.position.y/app.t_s);
-			} else if(this.player.direction == 2){
-				x = Math.floor(this.player.position.x/app.t_s);
-				y = Math.floor((this.player.position.y+app.t_s/2)/app.t_s);
-			} else if(this.player.direction == 3){
-				x = Math.floor((this.player.position.x-app.t_s/2)/app.t_s);
-				y = Math.floor(this.player.position.y/app.t_s);
-			}
-	
-			if (!app.isOutside(x,y) && app.objects[y][x] != null) {
-				let txt = "Space: ";
-				if(app.objects[y][x].o.type == app.TreeData.type) {
-					txt += "Wood";
-				} else if(app.objects[y][x].o.type == app.StoneData.type) {
-					txt += "Stone";
-				} else if(app.objects[y][x].o.type == app.FoodData.type) {
-					txt += "Food";
-				} else if(app.objects[y][x].o.type == app.PersonData.type) {
-					txt += "Talk";
-				} else if(app.objects[y][x].o.type == app.HouseData.type) {
-					if(app.objects[y][x].o.style == 0){
-						if(app.objects[y][x].o.health<app.HouseData.health){
-							txt += "Work";
-						} else {
-							txt = "";
-						}
-					} else {
-						txt += "Play";
-					}
+		if(this.currentGameState == this.GAME_STATE_GAME){
+			this.textCTX.save();
+			this.textCTX.globalAlpha = 0.7;
+			if(app.topDown.buildingStatus){
+				app.draw.text(this.textCTX, "Enter : Confirm", 2*this.ZOOM_RATE, (this.HEIGHT - 20)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+				app.draw.text(this.textCTX, "Esc : Cancel", 2*this.ZOOM_RATE, (this.HEIGHT - 10)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+			} else if(app.HouseData.checkSpace(x, y, this.player.direction)){
+				if((app.wood >= 20 && app.stone >= 30) ||  (app.social >= 2)){
+					app.draw.text(this.textCTX, "B : Build", 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
 				}
-				app.draw.text(this.textCTX, txt, 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+			} else {
+				if(this.player.direction == 0){
+					x = Math.floor(this.player.position.x/app.t_s);
+					y = Math.floor((this.player.position.y-app.t_s/2)/app.t_s);
+				} else if(this.player.direction == 1){
+					x = Math.floor((this.player.position.x+app.t_s/2)/app.t_s);
+					y = Math.floor(this.player.position.y/app.t_s);
+				} else if(this.player.direction == 2){
+					x = Math.floor(this.player.position.x/app.t_s);
+					y = Math.floor((this.player.position.y+app.t_s/2)/app.t_s);
+				} else if(this.player.direction == 3){
+					x = Math.floor((this.player.position.x-app.t_s/2)/app.t_s);
+					y = Math.floor(this.player.position.y/app.t_s);
+				}
+		
+				if (!app.isOutside(x,y) && app.objects[y][x] != null) {
+					let txt = "Space: ";
+					if(app.objects[y][x].o.type == app.TreeData.type) {
+						txt += "Wood";
+					} else if(app.objects[y][x].o.type == app.StoneData.type) {
+						txt += "Stone";
+					} else if(app.objects[y][x].o.type == app.FoodData.type) {
+						txt += "Food";
+					} else if(app.objects[y][x].o.type == app.PersonData.type) {
+						txt += "Talk";
+					} else if(app.objects[y][x].o.type == app.HouseData.type) {
+						if(app.objects[y][x].o.style == 0){
+							if(app.objects[y][x].o.health<app.HouseData.health){
+								txt += "Work";
+							} else {
+								txt = "";
+							}
+						} else {
+							txt += "Play";
+						}
+					}
+					app.draw.text(this.textCTX, txt, 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+				}
 			}
+			this.textCTX.globalAlpha = 1;
+			this.textCTX.restore();
 		}
-		this.textCTX.globalAlpha = 1;
-		this.textCTX.restore();
-
 		app.draw.rect(this.ctx, 0, this.HEIGHT, this.WIDTH, this.BAR_HEIGHT, "brown");
 
 		let treeImage = app.TreeData.rootImages[0];
