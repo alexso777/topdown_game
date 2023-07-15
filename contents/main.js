@@ -3,18 +3,18 @@
 var app = app || {};
 
 app.topDown = {
-	WIDTH: 160,
-	HEIGHT: 96,
-	BAR_HEIGHT: 12,
+	WIDTH: 640,
+	HEIGHT: 512,
+	BAR_HEIGHT: 72,
 	W_W: 20,
-	W_H: 12,
+	W_H: 16,
 	O_W: 0,
 	O_H: 0,
 	E_W: 0,
 	E_H: 0,
 	S_W: 0,
 	S_H: 0,
-	ZOOM_RATE: 6,
+	ZOOM_RATE: 1,
 	// Used to change from menu to game and other windows
 	GAME_STATE_MENU: 1,
 	GAME_STATE_GAME: 2,

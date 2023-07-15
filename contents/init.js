@@ -24,7 +24,7 @@ app.KEYBOARD = {
 	"KEY_NO": 78,
 };
 
-app.t_s = 8;
+app.t_s = 32;
 app.w_w = 60;
 app.w_h = 30;
 
@@ -303,7 +303,7 @@ app.isOutside = function (x, y) {
 
 
 
-new app.Tree(7, 8, 1, false);
+new app.Tree(7, 8, 0, false);
 new app.Tree(7, 8, 0, false);
 new app.Tree(7, 9, 0, false);
 new app.Tree(7, 10, 0, false);
@@ -313,10 +313,10 @@ new app.Tree(7, 11, 0, false);
 new app.Tree(4, 28, 0, false);
 new app.Tree(4, 24, 0, false);
 new app.Tree(3, 19, 0, false);
-new app.Tree(4, 27, 1, false);
+new app.Tree(4, 27, 0, false);
 new app.Tree(6, 28, 0, false);
 new app.Tree(4, 24, 0, false);
-new app.Tree(5, 19, 1, false);
+new app.Tree(5, 19, 0, false);
 new app.Tree(7, 27, 0, false);
 
 
@@ -331,34 +331,34 @@ new app.Tree(11, 6, 0, false);
 new app.Tree(13, 6, 0, false);
 new app.Tree(15, 6, 0, false);
 
-new app.Tree(0, 1, 1, false);
-new app.Tree(0, 3, 1, false);
-new app.Tree(0, 5, 1, false);
-new app.Tree(0, 6, 1, false);
-new app.Tree(0, 8, 1, false);
-new app.Tree(0, 23, 1, false);
-new app.Tree(0, 14, 1, false);
-new app.Tree(0, 12, 1, false);
-new app.Tree(0, 16, 1, false);
-new app.Tree(0, 17, 1, false);
-new app.Tree(0, 25, 1, false);
+new app.Tree(0, 1, 0, false);
+new app.Tree(0, 3, 0, false);
+new app.Tree(0, 5, 0, false);
+new app.Tree(0, 6, 0, false);
+new app.Tree(0, 8, 0, false);
+new app.Tree(0, 23, 0, false);
+new app.Tree(0, 14, 0, false);
+new app.Tree(0, 12, 0, false);
+new app.Tree(0, 16, 0, false);
+new app.Tree(0, 17, 0, false);
+new app.Tree(0, 25, 0, false);
 
 
-new app.Tree(2, 6, 1, false);
-new app.Tree(2, 7, 1, false);
-new app.Tree(2, 13, 1, false);
+new app.Tree(2, 6, 0, false);
+new app.Tree(2, 7, 0, false);
+new app.Tree(2, 13, 0, false);
 new app.Tree(2, 19, 0, false);
-new app.Tree(2, 27, 1, false);
-new app.Tree(2, 14, 1, false);
+new app.Tree(2, 27, 0, false);
+new app.Tree(2, 14, 0, false);
 new app.Tree(2, 12, 0, false);
-new app.Tree(2, 11, 1, false);
+new app.Tree(2, 11, 0, false);
 new app.Tree(2, 25, 0, false);
 
-new app.Tree(15, 4, 1, false);
+new app.Tree(15, 4, 0, false);
 
 new app.Tree(4, 4, 0, false);
 new app.Tree(3, 2, 0, false);
-new app.Tree(6, 5, 1, false);
+new app.Tree(6, 5, 0, false);
 new app.Tree(6, 3, 0, false);
 new app.Tree(3, 5, 0, false);
 
@@ -380,7 +380,7 @@ new app.Tree(57, 25, 0, false);
 new app.Tree(56, 26, 0, false);
 new app.Tree(58, 21, 0, false);
 new app.Tree(52, 21, 0, false);
-new app.Tree(51, 13, 1, false);
+new app.Tree(51, 13, 0, false);
 new app.Tree(48, 18, 0, false);
 new app.Tree(47, 18, 0, false);
 
@@ -444,36 +444,36 @@ new app.Tree(42, 26, 0, false);
 new app.Tree(33, 24, 0, false);
 new app.Tree(38, 25, 0, false);
 
-new app.Tree(4, 8, 1, false);
+new app.Tree(4, 8, 0, false);
 new app.Tree(11, 18, 0, false);
 new app.Tree(9, 6, 0, false);
-new app.Tree(14, 16, 1, false);
+new app.Tree(14, 16, 0, false);
 
-new app.Tree(44, 8, 1, false);
+new app.Tree(44, 8, 0, false);
 new app.Tree(41, 18, 0, false);
 new app.Tree(39, 6, 0, false);
-new app.Tree(44, 16, 1, false);
+new app.Tree(44, 16, 0, false);
 new app.Tree(43, 6, 0, false);
 new app.Tree(40, 15, 0, false);
-new app.Tree(36, 16, 1, false);
+new app.Tree(36, 16, 0, false);
 new app.Tree(44, 13, 0, false);
 
-new app.Tree(47, 28, 1, false);
+new app.Tree(47, 28, 0, false);
 new app.Tree(46, 26, 0, false);
 new app.Tree(44, 12, 0, false);
 new app.Tree(46, 26, 0, false);
 new app.Tree(49, 23, 0, false);
 
 new app.Tree(54, 12, 0, false);
-new app.Tree(56, 6, 1, false);
+new app.Tree(56, 6, 0, false);
 new app.Tree(59, 23, 0, false);
 new app.Tree(57, 12, 0, false);
 new app.Tree(54, 6, 0, false);
 new app.Tree(58, 15, 0, false);
 
 new app.Food(3, 3, 0);
-new app.Food(3, 5, 1);
-new app.Food(4, 4, 1);
+new app.Food(3, 5, 0);
+new app.Food(4, 4, 0);
 new app.Food(14, 3, 1);
 
 new app.Food(5, 23, 1);
@@ -492,71 +492,71 @@ new app.Food(45, 21, 0);
 
 new app.Tree(11, 28, 0, false);
 new app.Tree(9, 16, 0, false);
-new app.Tree(14, 18, 1, false);
+new app.Tree(14, 18, 0, false);
 
 
 new app.Stone(8, 3, 0);
-new app.Stone(9, 4, 2);
+new app.Stone(9, 4, 1);
 new app.Stone(5, 16, 0);
 new app.Stone(6, 17, 1);
 new app.Stone(5, 17, 0);
-new app.Stone(8, 19, 2);
+new app.Stone(8, 19, 1);
 
 new app.Stone(28, 23, 0);
-new app.Stone(29, 24, 2);
+new app.Stone(29, 24, 1);
 new app.Stone(25, 26, 0);
 new app.Stone(26, 27, 1);
 new app.Stone(25, 27, 0);
-new app.Stone(18, 29, 2);
+new app.Stone(18, 29, 1);
 
 new app.Stone(38, 23, 0);
-new app.Stone(39, 24, 2);
+new app.Stone(39, 24, 1);
 new app.Stone(35, 16, 0);
 new app.Stone(36, 27, 1);
 new app.Stone(45, 27, 0);
-new app.Stone(48, 19, 2);
+new app.Stone(48, 19, 1);
 
-new app.Tree(33, 26, 1, false);
-new app.Tree(35, 27, 1, false);
-new app.Tree(38, 28, 1, false);
+new app.Tree(33, 26, 0, false);
+new app.Tree(35, 27, 0, false);
+new app.Tree(38, 28, 0, false);
 new app.Tree(34, 29, 0, false);
-new app.Tree(32, 26, 1, false);
-new app.Tree(45, 27, 1, false);
+new app.Tree(32, 26, 0, false);
+new app.Tree(45, 27, 0, false);
 
-new app.Tree(3, 26, 1, false);
-new app.Tree(5, 27, 1, false);
-new app.Tree(8, 28, 1, false);
+new app.Tree(3, 26, 0, false);
+new app.Tree(5, 27, 0, false);
+new app.Tree(8, 28, 0, false);
 new app.Tree(4, 29, 0, false);
-new app.Tree(12, 26, 1, false);
-new app.Tree(15, 27, 1, false);
-new app.Tree(18, 28, 1, false);
+new app.Tree(12, 26, 0, false);
+new app.Tree(15, 27, 0, false);
+new app.Tree(18, 28, 0, false);
 new app.Tree(14, 29, 0, false);
-new app.Tree(22, 29, 1, false);
-new app.Tree(26, 29, 1, false);
+new app.Tree(22, 29, 0, false);
+new app.Tree(26, 29, 0, false);
 new app.Tree(27, 28, 0, false);
-new app.Tree(21, 26, 1, false);
+new app.Tree(21, 26, 0, false);
 new app.Stone(11, 23, 0);
-new app.Stone(9, 24, 2);
+new app.Stone(9, 24, 1);
 new app.Stone(15, 26, 0);
 new app.Tree(8, 23, 0, false);
 
-new app.Person(1, 29, 4);
+new app.Person(1, 29, 0);
 new app.Tree(3, 3, 0, false);
 new app.Food(3, 7, 0);
 new app.Tree(6, 8, 0, false);
 new app.Tree(10, 25, 0, false);
 new app.House(12, 10, 1, 0, 8);
-new app.Person(12, 14, 2);
-new app.Tree(13, 23, 1, false);
+new app.Person(12, 14, 1);
+new app.Tree(13, 23, 0, false);
 new app.Stone(13, 5, 0);
 new app.Food(16, 15, 1);
-new app.Person(21, 10, 3);
+new app.Person(21, 10, 0);
 new app.Stone(23, 23, 1);
 new app.Food(23, 5, 0);
 new app.Food(23, 20, 1);
 new app.Person(33, 8, 1);
 new app.Food(33, 7, 1);
-new app.Tree(33, 29, 1, false);
+new app.Tree(33, 29, 0, false);
 new app.House(33, 14, 2, 1, 8);
 new app.Stone(43, 7, 1);
 new app.Tree(43, 16, 0, false);
@@ -565,30 +565,30 @@ new app.Food(49, 6, 0);
 new app.Tree(51, 12, 0, false);
 new app.Stone(55, 15, 2);
 new app.Food(53, 14, 1);
-new app.Tree(57, 21, 1, false);
-new app.Tree(55, 13, 1, false);
+new app.Tree(57, 21, 0, false);
+new app.Tree(55, 13, 0, false);
 
 new app.Stone(36, 8, 0);
 new app.Stone(34, 9, 1);
-new app.Stone(37, 11, 2);
+new app.Stone(37, 11, 1);
 
 
 new app.Tree(15, 26, 0, false);
-new app.Tree(16, 29, 1, false);
+new app.Tree(16, 29, 0, false);
 new app.Tree(18, 24, 0, false);
 new app.Tree(15, 25, 0, false);
-new app.Tree(19, 26, 1, false);
+new app.Tree(19, 26, 0, false);
 new app.Tree(15, 23, 0, false);
-new app.Tree(17, 25, 1, false);
+new app.Tree(17, 25, 0, false);
 
 
 new app.Tree(18, 26, 0, false);
-new app.Tree(19, 29, 1, false);
+new app.Tree(19, 29, 0, false);
 new app.Tree(21, 24, 0, false);
 new app.Tree(24, 25, 0, false);
-new app.Tree(26, 26, 1, false);
+new app.Tree(26, 26, 0, false);
 new app.Tree(25, 23, 0, false);
-new app.Tree(27, 25, 1, false);
+new app.Tree(27, 25, 0, false);
 
 new app.Tree(41, 29, 0, false);
 new app.Tree(34, 27, 0, false);
@@ -609,22 +609,22 @@ new app.Tree(47, 28, 0, false);
 
 new app.Food(58, 3, 0);
 new app.Tree(51, 2, 0);
-new app.Tree(56, 11, 1);
+new app.Tree(56, 11, 0);
 
 new app.Stone(57, 4, 0);
 new app.Stone(55, 3, 1);
-new app.Stone(55, 4, 2);
+new app.Stone(55, 4, 1);
 
 new app.Stone(33, 18, 0);
 new app.Stone(35, 18, 1);
-new app.Stone(31, 19, 2);
+new app.Stone(31, 19, 1);
 
 new app.Stone(38, 28, 0);
 
 new app.Stone(58, 28, 0);
 new app.Stone(58, 26, 1);
 new app.Stone(56, 24, 0);
-new app.Stone(52, 26, 2);
+new app.Stone(52, 26, 1);
 
 app.PLAYER_IMAGES = [];
 
