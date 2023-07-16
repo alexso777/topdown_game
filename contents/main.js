@@ -197,12 +197,8 @@ app.topDown = {
 			else if(app.topDown.buildingStatus.direction == 2)
 				y = y+1;
 			else if(app.topDown.buildingStatus.direction == 3)
-				x = x-2;
-			this.ctx.save();
-			this.ctx.globalAlpha = 0.7;
-			app.draw.rect(this.ctx, (x-this.O_W)*app.t_s-this.E_W, (y-this.O_H)*app.t_s-this.E_H, app.t_s*2, app.t_s, "brown");
-			this.ctx.globalAlpha = 1;
-			this.ctx.save();
+				x = x-4;
+			this.ctx.drawImage(app.SITE_IMAGE, (x-this.O_W)*app.t_s-this.E_W, (y-this.O_H)*app.t_s-this.E_H, app.SITE_IMAGE.width, app.SITE_IMAGE.height);
 		}
 		if(app.player.workFrame>0){
 			app.player.workFrame = (app.player.workFrame+1)%20;
@@ -221,10 +217,10 @@ app.topDown = {
 				app.social+=1;
 			this.chatStatus = 0;
 		} else {
-			app.draw.rect(this.ctx, 10, 20, 140, 50, "brown");
-			app.draw.text(this.textCTX, app.questions[this.chatStatus-1], 15*this.ZOOM_RATE, 35*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white", 130*this.ZOOM_RATE);
-			app.draw.text(this.textCTX, "Yes", 50*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
-			app.draw.text(this.textCTX, "No", 90*this.ZOOM_RATE, 65*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+			this.ctx.drawImage(app.CHAT_IMAGE, 100, 200, app.CHAT_IMAGE.width, app.CHAT_IMAGE.height);
+			app.draw.text(this.textCTX, app.questions[this.chatStatus-1], 140*this.ZOOM_RATE, 280*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white", 380*this.ZOOM_RATE);
+			app.draw.text(this.textCTX, "Yes", 250*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
+			app.draw.text(this.textCTX, "No", 350*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
 		}
 	},
 
@@ -232,14 +228,15 @@ app.topDown = {
 		let x = Math.floor(this.player.position.x/app.t_s);
 		let y = Math.floor(this.player.position.y/app.t_s);
 		if(this.currentGameState == this.GAME_STATE_GAME){
-			this.textCTX.save();
-			this.textCTX.globalAlpha = 0.7;
 			if(app.topDown.buildingStatus){
-				app.draw.text(this.textCTX, "Enter : Confirm", 2*this.ZOOM_RATE, (this.HEIGHT - 20)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
-				app.draw.text(this.textCTX, "Esc : Cancel", 2*this.ZOOM_RATE, (this.HEIGHT - 10)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+				this.ctx.drawImage(app.HINT_IMAGE, 0, this.HEIGHT - 85, app.HINT_IMAGE.width, app.HINT_IMAGE.height);
+				app.draw.text(this.textCTX, "Enter : Confirm", 10*this.ZOOM_RATE, (this.HEIGHT - 60)*this.ZOOM_RATE, 16*this.ZOOM_RATE, "white");
+				this.ctx.drawImage(app.HINT_IMAGE, 0, this.HEIGHT - 45, app.HINT_IMAGE.width, app.HINT_IMAGE.height);
+				app.draw.text(this.textCTX, "Esc : Cancel", 10*this.ZOOM_RATE, (this.HEIGHT - 20)*this.ZOOM_RATE, 16*this.ZOOM_RATE, "white");
 			} else if(app.HouseData.checkSpace(x, y, this.player.direction)){
 				if((app.wood >= 20 && app.stone >= 30) ||  (app.social >= 2)){
-					app.draw.text(this.textCTX, "B : Build", 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+					this.ctx.drawImage(app.HINT_IMAGE, 0, this.HEIGHT - 65, app.HINT_IMAGE.width, app.HINT_IMAGE.height);
+					app.draw.text(this.textCTX, "B : Build", 10*this.ZOOM_RATE, (this.HEIGHT - 40)*this.ZOOM_RATE, 16*this.ZOOM_RATE, "white");
 				}
 			} else {
 				if(this.player.direction == 0){
@@ -277,29 +274,25 @@ app.topDown = {
 							txt += "Play";
 						}
 					}
-					app.draw.text(this.textCTX, txt, 2*this.ZOOM_RATE, (this.HEIGHT - 16)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "red");
+					if(txt != "")
+						this.ctx.drawImage(app.HINT_IMAGE, 0, this.HEIGHT - 65, app.HINT_IMAGE.width, app.HINT_IMAGE.height);
+					app.draw.text(this.textCTX, txt, 12*this.ZOOM_RATE, (this.HEIGHT - 40)*this.ZOOM_RATE, 16*this.ZOOM_RATE, "white");
 				}
 			}
-			this.textCTX.globalAlpha = 1;
-			this.textCTX.restore();
 		}
 		app.draw.rect(this.ctx, 0, this.HEIGHT, this.WIDTH, this.BAR_HEIGHT, "brown");
 
-		let treeImage = app.TreeData.rootImages[0];
-		this.ctx.drawImage(treeImage, 2, this.HEIGHT + 2, treeImage.width, treeImage.height);
-		app.draw.text(this.textCTX, app.wood.toString(), 12*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+		this.ctx.drawImage(app.WOOD_IMAGE, 10, this.HEIGHT + 2, app.WOOD_IMAGE.width, app.WOOD_IMAGE.height);
+		app.draw.text(this.textCTX, app.wood.toString(), 70*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 12)*this.ZOOM_RATE, 40*this.ZOOM_RATE, "white");
 
-		let stoneImage = app.StoneData.stoneImages[0];
-		this.ctx.drawImage(stoneImage, 32, this.HEIGHT + 2, stoneImage.width, stoneImage.height);
-		app.draw.text(this.textCTX, app.stone.toString(), 42*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+		this.ctx.drawImage(app.STONE_IMAGE, 130, this.HEIGHT + 2, app.STONE_IMAGE.width, app.STONE_IMAGE.height);
+		app.draw.text(this.textCTX, app.stone.toString(), 190*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 12)*this.ZOOM_RATE, 40*this.ZOOM_RATE, "white");
 
-		let foodImage = app.FoodData.foodImages[1];
-		this.ctx.drawImage(foodImage, 64, this.HEIGHT + 2, foodImage.width, foodImage.height);
-		app.draw.text(this.textCTX, app.food.toString(), 74*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+		this.ctx.drawImage(app.FOOD_IMAGE, 250, this.HEIGHT + 2, app.FOOD_IMAGE.width, app.FOOD_IMAGE.height);
+		app.draw.text(this.textCTX, app.food.toString(), 310*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 12)*this.ZOOM_RATE, 40*this.ZOOM_RATE, "white");
 
-		let personImage = app.PersonData.personImages[0];
-		this.ctx.drawImage(personImage, 96, this.HEIGHT + 2, personImage.width, personImage.height);
-		app.draw.text(this.textCTX, app.social.toString(), 106*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 4)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
+		this.ctx.drawImage(app.RELATION_IMAGE, 370, this.HEIGHT + 2, app.RELATION_IMAGE.width, app.RELATION_IMAGE.height);
+		app.draw.text(this.textCTX, app.social.toString(), 430*this.ZOOM_RATE, (this.HEIGHT + this.BAR_HEIGHT / 2 + 12)*this.ZOOM_RATE, 40*this.ZOOM_RATE, "white");
 	},
 
 	// Lets the player know the game is paused

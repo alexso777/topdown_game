@@ -27,9 +27,7 @@ app.Stone = function(){
 		this.width = 2;
 		this.height = 1;
 		this.health = app.StoneData.health;
-		for(let i=0; i<2; i++){
-			app.objects[posY][posX+i] = {o:this, r: (i==0) ? 1 : 0};
-		}
+		app.objects[posY][posX] = {o:this, r: 1};
 	} // end Stone Constructor
 	
 	
@@ -39,8 +37,8 @@ app.Stone = function(){
 	p.draw = function(ctx, O_W, O_H, E_W, E_H) {
 		let image = app.StoneData.stoneImages[this.style];
 		if(this.health!= app.StoneData.health && this.health>0){
-			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "white");
-			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width*this.health/app.StoneData.health, (this.posY-O_H)*app.t_s-E_H - image.height/2), 1, "red");
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width, (this.posY-O_H)*app.t_s-E_H - image.height/2), 4, "white");
+			app.draw.line(ctx, new app.Vector((this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H - image.height/2), new app.Vector((this.posX-O_W)*app.t_s-E_W+image.width*this.health/app.StoneData.health, (this.posY-O_H)*app.t_s-E_H - image.height/2), 4, "red");
 		}
 		ctx.drawImage(image, (this.posX-O_W)*app.t_s-E_W, (this.posY-O_H)*app.t_s-E_H + app.t_s - image.height, image.width, image.height);
 	};
@@ -51,7 +49,6 @@ app.Stone = function(){
 		if(this.health<=0){
 			app.stone += 5;
 			app.objects[this.posY][this.posX] = null;
-			app.objects[this.posY][this.posX+1] = null;
 			delete this;
 		}
 	}
