@@ -23,9 +23,10 @@ app.Food = function(){
 		this.posY = posY;
 		this.type = app.FoodData.type;
 		this.style = style;
-		this.width = 1;
+		this.width = 2;
 		this.height = 1;
 		app.objects[posY][posX] = {o:this, r:1};
+		app.objects[posY][posX+1] = {o:this, r:0};
 	} // end Food Constructor
 	
 	
@@ -41,6 +42,7 @@ app.Food = function(){
 		app.player.workFrame = 1;
 		app.food += 5;
 		app.objects[this.posY][this.posX] = null;
+		app.objects[this.posY][this.posX+1] = null;
 		delete this;
 	}
 	

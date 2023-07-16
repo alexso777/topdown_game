@@ -6,8 +6,8 @@ app.player = {
 	position: undefined,
 	velocity: undefined,
 	acceleration: undefined,
-	width: 8,
-	height: 8,
+	width: 25,
+	height: 32,
 	direction: 0,
 	frame: 0,
 	speed: 80,
@@ -20,7 +20,7 @@ app.player = {
 	
 	// Sets up the player
 	init: function(){
-		this.position = new app.Vector(200,150);
+		this.position = new app.Vector(600,400);
 		this.velocity = new app.Vector(0,0);
 		this.acceleration = new app.Vector(0,0);
 	},
