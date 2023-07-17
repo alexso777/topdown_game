@@ -219,8 +219,8 @@ app.topDown = {
 		} else {
 			this.ctx.drawImage(app.CHAT_IMAGE, 100, 200, app.CHAT_IMAGE.width, app.CHAT_IMAGE.height);
 			app.draw.text(this.textCTX, app.questions[this.chatStatus-1], 140*this.ZOOM_RATE, 280*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white", 380*this.ZOOM_RATE);
-			app.draw.text(this.textCTX, "Yes", 250*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
-			app.draw.text(this.textCTX, "No", 350*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
+			app.draw.text(this.textCTX, "Yes (Y)", 250*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
+			app.draw.text(this.textCTX, "No (N)", 350*this.ZOOM_RATE, 340*this.ZOOM_RATE, 20*this.ZOOM_RATE, "white");
 		}
 	},
 
@@ -301,7 +301,7 @@ app.topDown = {
 		this.textCTX.save();
 		this.textCTX.textAlign = "center";
 		this.textCTX.textBaseline = "middle";
-		app.draw.text(this.textCTX, "... PAUSED ...", this.WIDTH / 2*this.ZOOM_RATE, this.HEIGHT / 2*this.ZOOM_RATE, 12*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "... PAUSED ...", this.WIDTH / 2*this.ZOOM_RATE, this.HEIGHT / 2*this.ZOOM_RATE, 80*this.ZOOM_RATE, "white");
 		this.textCTX.restore();
 	},
 
@@ -314,16 +314,16 @@ app.topDown = {
 		this.textCTX.save();
 		this.textCTX.textAlign = "center";
 		this.textCTX.textBaseline = "middle";
-		app.draw.text(this.textCTX, "TopDown", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 30)*this.ZOOM_RATE, 8*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "Click to play", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 10)*this.ZOOM_RATE, 5*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "Made by TechGuy", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 0)*this.ZOOM_RATE, 5*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "Controls", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 15)*this.ZOOM_RATE, 6*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "A - Move Left", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 25)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "D - Move Right", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 25)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "W - Move Up", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 32)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "S - Move Down", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 32)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "Space - Work", (this.WIDTH / 2 - 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 39)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
-		app.draw.text(this.textCTX, "C - Build house", (this.WIDTH / 2 + 40)*this.ZOOM_RATE, (this.HEIGHT / 2 + 39)*this.ZOOM_RATE, 4*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "TopDown", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 180)*this.ZOOM_RATE, 48*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Click to play", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 - 60)*this.ZOOM_RATE, 30*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Made by TechGuy", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 0)*this.ZOOM_RATE, 30*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Controls", this.WIDTH / 2*this.ZOOM_RATE, (this.HEIGHT / 2 + 90)*this.ZOOM_RATE, 36*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "A - Move Left", (this.WIDTH / 2 - 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 140)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "D - Move Right", (this.WIDTH / 2 + 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 140)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "W - Move Up", (this.WIDTH / 2 - 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 170)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "S - Move Down", (this.WIDTH / 2 + 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 170)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "Space - Work", (this.WIDTH / 2 - 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 200)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
+		app.draw.text(this.textCTX, "C - Build house", (this.WIDTH / 2 + 150)*this.ZOOM_RATE, (this.HEIGHT / 2 + 200)*this.ZOOM_RATE, 24*this.ZOOM_RATE, "white");
 		this.textCTX.restore();
 	},
 
