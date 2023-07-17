@@ -16,9 +16,8 @@ app.topDown = {
 	S_H: 0,
 	ZOOM_RATE: 1,
 	// Used to change from menu to game and other windows
-	GAME_STATE_MENU: 1,
-	GAME_STATE_GAME: 2,
-	GAME_STATE_DEAD: 3,
+	GAME_STATE_GAME: 1,
+	GAME_STATE_DEAD: 2,
 
 	// Debug allows for:
 	// Enemies to be seen
@@ -74,12 +73,8 @@ app.topDown = {
 			this.drawPauseScreen();
 		} else {
 			// Update the game
-			// Main menu screen
-			if (this.currentGameState == this.GAME_STATE_MENU) {
-				this.drawMainScreen();
-			}
 			// Game Screen
-			else if (this.currentGameState == this.GAME_STATE_GAME) {
+			if (this.currentGameState == this.GAME_STATE_GAME) {
 				this.player.update(this.dt);
 				if (!this.chatStatus && this.buildingStatus == undefined) {
 					this.moveSprites();
@@ -381,15 +376,10 @@ app.topDown = {
 
 	// Triggered when the player clicks the mouse
 	doMousedown: function (e) {
-		// If in the menu screen, change to the game screen
-		if (this.currentGameState == this.GAME_STATE_MENU) {
-			this.currentGameState = this.GAME_STATE_GAME;
-		}
 		// If in the game screen, shoot a tree
-		else if (this.currentGameState == this.GAME_STATE_GAME) {
+		if (this.currentGameState == this.GAME_STATE_GAME) {
 
 		}
-		// If in the game over screen, reset the game and go to the menu
 		else if (this.currentGameState == this.GAME_STATE_DEAD) {
 			this.score = 0;
 			this.player.health = 100;
@@ -397,7 +387,7 @@ app.topDown = {
 			this.waveAmount = 15;
 			this.currentWave = 1;
 			this.houseKills = 0;
-			this.currentGameState = app.topDown.GAME_STATE_MENU;
+			this.currentGameState = app.topDown.GAME_STATE_GAME;
 		}
 	},
 

@@ -20,7 +20,7 @@ app.player = {
 	
 	// Sets up the player
 	init: function(){
-		this.position = new app.Vector(600,400);
+		this.position = new app.Vector(600,350);
 		this.velocity = new app.Vector(0,0);
 		this.acceleration = new app.Vector(0,0);
 	},
