@@ -4,10 +4,10 @@ var app = app || {};
 
 app.topDown = {
 	WIDTH: 640,
-	HEIGHT: 512,
-	BAR_HEIGHT: 72,
+	HEIGHT: 384,
+	BAR_HEIGHT: 66,
 	W_W: 20,
-	W_H: 16,
+	W_H: 12,
 	O_W: 0,
 	O_H: 0,
 	E_W: 0,
