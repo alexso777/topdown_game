@@ -1,11 +1,8 @@
-// draw.js
-// dependencies: none
 "use strict";
-var app = app || {};
 
 app.draw = {
 	// Clears part of the screen
-   clear : function(ctx, x, y, w, h) {
+	clear : function(ctx, x, y, w, h) {
 		ctx.clearRect(x, y, w, h);
 	},
 	

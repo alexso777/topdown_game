@@ -1,8 +1,4 @@
-// vector.js
-// dependencies: none
-
 "use strict";
-var app = app || {};
 
 app.Vector = function(){
 

@@ -1,7 +1,4 @@
-// utilities.js
-// dependencies: none
 "use strict";
-var app = app || {};
 
 app.utilities = function(){
 
