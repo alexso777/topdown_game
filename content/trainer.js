@@ -87,12 +87,12 @@ app.trainer = {
 	height: 32,
 	direction: 0,
 	frame: 0,
-	speed: 160,
+	speed: 200,
 	health: 100,
 	image: undefined,
 	workFrame: 0,
 
-	MAXSPEED: 160,
+	MAXSPEED: 200,
 	FRICTION: 60,
 	
 	// Sets up the player
