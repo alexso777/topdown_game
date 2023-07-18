@@ -35,7 +35,7 @@ app.House_2 = function(){
 	
 	// Set up the house
 	function House_2(posX, posY, direction, health){
-		this.type = app.HouseData.type;
+		this.type = app.HouseData_2.type;
 		this.health = health;
 		if(direction==0){
 			this.posX = posX;

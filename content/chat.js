@@ -29,9 +29,9 @@ app.drawChat= function(ctx, textCTX, ZOOM_RATE) {
 			app.social+=1;
 		app.chatStatus = 0;
 	} else {
-		ctx.drawImage(app.CHAT_IMAGE, 100, 200, app.CHAT_IMAGE.width, app.CHAT_IMAGE.height);
-		app.draw.text(textCTX, app.questions[app.chatStatus-1], 140*ZOOM_RATE, 280*ZOOM_RATE, 20*ZOOM_RATE, "white", 380*ZOOM_RATE);
-		app.draw.text(textCTX, "Yes (Y)", 250*ZOOM_RATE, 340*ZOOM_RATE, 20*ZOOM_RATE, "white");
-		app.draw.text(textCTX, "No (N)", 350*ZOOM_RATE, 340*ZOOM_RATE, 20*ZOOM_RATE, "white");
+		ctx.drawImage(app.CHAT_IMAGE, 100, 120, app.CHAT_IMAGE.width, app.CHAT_IMAGE.height);
+		app.draw.text(textCTX, app.questions[app.chatStatus-1], 140*ZOOM_RATE, 200*ZOOM_RATE, 20*ZOOM_RATE, "white", 380*ZOOM_RATE);
+		app.draw.text(textCTX, "Yes (Y)", 250*ZOOM_RATE, 260*ZOOM_RATE, 20*ZOOM_RATE, "white");
+		app.draw.text(textCTX, "No (N)", 350*ZOOM_RATE, 260*ZOOM_RATE, 20*ZOOM_RATE, "white");
 	}
 }

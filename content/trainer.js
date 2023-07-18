@@ -78,6 +78,8 @@ left_images.push(left_3);
 
 app.TRAINER_IMAGES.push(left_images);
 
+app.track = [new app.Vector(600, 350)];
+
 app.trainer = {
 	color: "black",
 	position: undefined,
@@ -124,17 +126,17 @@ app.trainer = {
 		eX = Math.floor(eX);
 		eY = Math.floor(eY);
 
-		ctx.save();
-		
-		if(this.workFrame ==0 && (app.engine.buildingStatus || app.engine.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN])))
+		if(this.workFrame ==0 && (app.engine.buildingStatus || app.chatStatus || (!app.keydown[app.KEYBOARD.KEY_LEFT] && !app.keydown[app.KEYBOARD.KEY_UP] && !app.keydown[app.KEYBOARD.KEY_RIGHT] && !app.keydown[app.KEYBOARD.KEY_DOWN])))
 			this.frame = 0;
 		// Translate and rotate the character
 		ctx.drawImage(app.TRAINER_IMAGES[this.direction][Math.floor(this.frame/4)], (posX - O_W)*app.t_s + eX - halfW, (posY - O_H)*app.t_s + eY -halfH, this.width, this.height)
-		if(!app.engine.chatStatus && app.engine.buildingStatus == undefined && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
+		if(!app.chatStatus && app.engine.buildingStatus == undefined && (app.keydown[app.KEYBOARD.KEY_LEFT] || app.keydown[app.KEYBOARD.KEY_UP] || app.keydown[app.KEYBOARD.KEY_RIGHT] || app.keydown[app.KEYBOARD.KEY_DOWN]))
 			this.frame = (this.frame+1)%16;
-		else if(!app.engine.chatStatus && app.engine.buildingStatus == undefined && this.workFrame>0)
+		else if(!app.chatStatus && app.engine.buildingStatus == undefined && this.workFrame>0)
 			this.frame = (this.frame+1)%8;
-		ctx.restore();
+			
+		app.follower.style.left = app.track[app.track.length-1].x-O_W*app.t_s-app.engine.E_W-app.follower.width/2 + "px";
+		app.follower.style.top = app.track[app.track.length-1].y-O_H*app.t_s-app.engine.E_H -app.follower.height/2 + "px";
 	},
 	
 	// Moves the player to the left
@@ -189,7 +191,7 @@ app.trainer = {
 			{
 				let x = Math.floor(this.position.x/app.t_s);
 				let y = Math.floor(this.position.y/app.t_s);
-				if(app.HouseData.checkSpace(x, y, this.direction)){
+				if(app.HouseData_1.checkSpace(x, y, this.direction)){
 					if(app.wood >= 20 && app.stone >= 30 || app.social >= 2){
 						app.engine.buildingStatus = {x:x, y:y, direction: this.direction};
 					}
@@ -249,6 +251,20 @@ app.trainer = {
 		else if(this.position.y + halfH > app.w_h*app.t_s)
 		{
 			this.position.y = app.w_h*app.t_s - halfH;
+		}
+
+		if(Math.floor(this.position.x) != Math.floor(app.track[0].x) || Math.floor(this.position.y) != Math.floor(app.track[0].y)){
+			console.log("moving");
+			for(let i=12; i>=0; i--){
+				if(app.track.length<=i+1){
+					app.track.push(new app.Vector(app.track[0].x, app.track[0].y));
+				} else {
+					app.track[i+1].x = app.track[i].x;
+					app.track[i+1].y = app.track[i].y;
+				}
+			}
+			app.track[0].x = Math.floor(this.position.x);
+			app.track[0].y = Math.floor(this.position.y);
 		}
 	},
 	

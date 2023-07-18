@@ -103,14 +103,18 @@ app.engine = {
 		// Pausing the game
 		if (app.paused) {
 			this.drawPauseScreen();
+			app.follower.style.display = "none";
 		} else {
 			// Update the game
 			// Game Screen
+			app.follower.style.display = "block";
 			if (this.currentGameState == this.GAME_STATE_GAME) {
 				this.trainer.update(this.dt);
-				if (!this.chatStatus && this.buildingStatus == undefined) {
+				if (!app.chatStatus && this.buildingStatus == undefined) {
 					this.moveSprites();
 					this.trainer.doAction();
+				} else {
+					app.follower.style.display = "none";
 				}
 
 				let posX = Math.floor(this.trainer.position.x / app.t_s);
@@ -150,7 +154,7 @@ app.engine = {
 				this.drawSprites();
 				this.ctx.globalAlpha = 1.0;
 
-				if (this.chatStatus) {
+				if (app.chatStatus) {
 					app.drawChat(this.ctx, this.textCTX, this.ZOOM_RATE);
 				}
 
@@ -180,11 +184,11 @@ app.engine = {
 		if(app.keydown[app.KEYBOARD.KEY_ENTER])
 		{
 			if(app.wood >= 20 && app.stone >= 30){
-				new app.House(x, y, 0, app.engine.buildingStatus.direction, 1);
+				new app.House_1(x, y, app.engine.buildingStatus.direction, 1);
 				app.wood -= 20;
 				app.stone -= 20;
 			} else if (app.social >= 2){
-				new app.House(x, y, 0, app.engine.buildingStatus.direction, 1);
+				new app.House_1(x, y, app.engine.buildingStatus.direction, 1);
 				app.social -= 2;
 			}
 			app.trainer.workFrame = 0;

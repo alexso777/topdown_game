@@ -77,7 +77,7 @@ app.House_1 = function(){
 
 	p.doAction = function() {
 		app.trainer.workFrame = 1;
-		if(this.style == 0 && this.health<app.HouseData_1.health){
+		if(this.health<app.HouseData_1.health){
 			this.health++;
 		}
 	}	

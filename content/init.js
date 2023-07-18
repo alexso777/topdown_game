@@ -36,7 +36,6 @@ window.onblur = function () {
 	cancelAnimationFrame(app.animationID);
 	app.keydown = []; // clear key daemon
 
-	// createjs.Sound.stop();
 	// call update() so that our paused screen gets drawn
 	app.engine.update();
 };
@@ -45,7 +44,6 @@ window.onfocus = function () {
 	app.paused = false;
 	cancelAnimationFrame(app.animationID);
 
-	app.engine.startSoundtrack();
 	// start the animation back up
 	app.engine.update();
 };

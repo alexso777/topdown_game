@@ -26,7 +26,7 @@ app.Person_1 = function(){
 	};
 
 	p.doAction = function() {
-		app.engine.chatStatus = Math.floor(Math.random() * 10) + 1;
+		app.chatStatus = Math.floor(Math.random() * 10) + 1;
 	}
 	
 	return Person_1; 
