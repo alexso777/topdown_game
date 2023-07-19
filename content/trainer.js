@@ -78,7 +78,7 @@ left_images.push(left_3);
 
 app.TRAINER_IMAGES.push(left_images);
 
-app.track = [new app.Vector(600, 300)];
+app.track = [new app.Vector(600, 320)];
 
 app.trainer = {
 	color: "black",
