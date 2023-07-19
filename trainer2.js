@@ -254,8 +254,7 @@ app.trainer = {
 		}
 
 		if(Math.floor(this.position.x) != Math.floor(app.track[0].x) || Math.floor(this.position.y) != Math.floor(app.track[0].y)){
-			console.log("moving");
-			for(let i=12; i>=0; i--){
+			for(let i=6; i>=0; i--){
 				if(app.track.length<=i+1){
 					app.track.push(new app.Vector(app.track[0].x, app.track[0].y));
 				} else {
